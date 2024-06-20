@@ -1,7 +1,12 @@
 import React from 'react'
+import { ErrorBoundary } from '../../components/ErrorBoundary'
 
 const Game = () => {
-  return <div>Game</div>
+  return (
+    <ErrorBoundary>
+      <div>Game</div>
+    </ErrorBoundary>
+  )
 }
 
 export default Game

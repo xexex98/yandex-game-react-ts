@@ -13,3 +13,4 @@ jobs:
           assignees: ${{ github.actor }}
           reviewers: drun48, wwwriterrr, trishinanton, alexxxpo, xexex98
           max-num-of-reviewers: 2
+          github-token: ${{ secrets.GITHUB_TOKEN }}

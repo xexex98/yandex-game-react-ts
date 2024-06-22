@@ -1,6 +1,6 @@
 import { SignIn } from './pages/login'
 import { MainPage } from './pages/main'
-import { RegistrationPage } from './pages/registration'
+import { LazySignUp } from './pages/registration'
 import { ProfilePage } from './pages/profile'
 import { ForumPage } from './pages/forum'
 import { GamePage } from './pages/game'
@@ -21,7 +21,7 @@ const routes: RouteObject[] = [
   },
   {
     path: 'registration',
-    element: <RegistrationPage />,
+    element: <LazySignUp />,
   },
   {
     path: 'profile',

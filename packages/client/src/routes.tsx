@@ -1,4 +1,4 @@
-import { LoginPage } from './pages/login'
+import { SignIn } from './pages/login'
 import { MainPage } from './pages/main'
 import { RegistrationPage } from './pages/registration'
 import { ProfilePage } from './pages/profile'
@@ -17,7 +17,7 @@ const routes: RouteObject[] = [
   },
   {
     path: 'login',
-    element: <LoginPage />,
+    element: <SignIn />,
   },
   {
     path: 'registration',

@@ -2,3 +2,5 @@ node_modules
 dist
 public
 .eslintcache
+vite.config.ts
+jest.config.js

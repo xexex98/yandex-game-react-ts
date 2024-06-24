@@ -1,13 +1,14 @@
-import { SignIn } from './pages/login'
-import { MainPage } from './pages/main'
-import { RegistrationPage } from './pages/registration'
-import { ProfilePage } from './pages/profile'
-import { ForumPage } from './pages/forum'
-import { GamePage } from './pages/game'
-import { TopicPage } from './pages/topic'
-import { LeaderBoardPage } from './pages/leader_board'
-import { ErrorPage } from './pages/error'
-import { RouteObject } from 'react-router-dom'
+import { RouteObject } from 'react-router-dom';
+
+import { ErrorPage } from './pages/error';
+import { ForumPage } from './pages/forum';
+import { GamePage } from './pages/game';
+import { LeaderBoardPage } from './pages/leader_board';
+import { SignIn } from './pages/login';
+import { MainPage } from './pages/main';
+import { ProfilePage } from './pages/profile';
+import { RegistrationPage } from './pages/registration';
+import { TopicPage } from './pages/topic';
 
 const routes: RouteObject[] = [
   {
@@ -45,6 +46,6 @@ const routes: RouteObject[] = [
     path: 'leaders',
     element: <LeaderBoardPage />,
   },
-]
+];
 
-export default routes
+export default routes;

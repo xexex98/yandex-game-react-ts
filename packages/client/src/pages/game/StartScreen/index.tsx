@@ -1,11 +1,10 @@
-import { FC } from 'react'
 import { Box, Button } from '@mui/material'
 
 type Props = {
   changeStart: () => void
 }
 
-export const StartScreen: FC<Props> = ({ changeStart }) => {
+export const StartScreen = ({ changeStart }: Props) => {
   return (
     <Box
       height="100vh"

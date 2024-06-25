@@ -1,8 +1,9 @@
+import { FC } from 'react'
 import { Box, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
-import style from '../main.module.css'
+import style from './AuthButtons.module.css'
 
-export const AuthButtons = () => {
+export const AuthButtons: FC = () => {
   return (
     <Box
       width={'100%'}

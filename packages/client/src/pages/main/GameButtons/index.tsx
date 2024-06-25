@@ -1,8 +1,9 @@
+import { FC } from 'react'
 import { Box, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
-import style from '../main.module.css'
+import style from './GameButtons.module.css'
 
-export const GameButtons = () => {
+export const GameButtons: FC = () => {
   return (
     <Box
       width={'100%'}

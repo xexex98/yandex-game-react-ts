@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { AuthButtons } from './auth_buttons'
-import { GameButtons } from './game_buttons'
+import { AuthButtons } from './AuthButtons'
+import { GameButtons } from './GameButtons'
 import { Box, Typography } from '@mui/material'
 
 export const MainPage = () => {

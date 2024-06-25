@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react'
-import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { HamsterCanvas } from './HamsterCanvas'
 
 const Game = () => {
@@ -10,10 +9,10 @@ const Game = () => {
   }, [])
 
   return (
-    <ErrorBoundary>
+    <>
       <div>Game: count click-{countClick}</div>
       <HamsterCanvas onClickCircle={onClickCircle} />
-    </ErrorBoundary>
+    </>
   )
 }
 

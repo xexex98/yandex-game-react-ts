@@ -1,4 +1,5 @@
-import { LoginPage } from './pages/login'
+import { ComponentType } from 'react'
+import { SignIn } from './pages/login'
 import { MainPage } from './pages/main'
 import { RegistrationPage } from './pages/registration'
 import { ProfilePage } from './pages/profile'
@@ -8,28 +9,36 @@ import { TopicPage } from './pages/topic'
 import { LeaderBoardPage } from './pages/leader_board'
 import { ErrorPage } from './pages/error'
 import { RouteObject } from 'react-router-dom'
+import { ErrorBoundary } from './components/ErrorBoundary'
+
+const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType
 
 const routes: RouteObject[] = [
   {
     path: '/',
     element: <MainPage />,
     errorElement: <ErrorPage />,
+    ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'login',
-    element: <LoginPage />,
+    element: <SignIn />,
+    ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'registration',
     element: <RegistrationPage />,
+    ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'profile',
     element: <ProfilePage />,
+    ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'forum',
     element: <ForumPage />,
+    ErrorBoundary: MyErrorBoundary,
     children: [
       {
         path: 'topic',
@@ -40,10 +49,12 @@ const routes: RouteObject[] = [
   {
     path: 'game',
     element: <GamePage />,
+    ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'leaders',
     element: <LeaderBoardPage />,
+    ErrorBoundary: MyErrorBoundary,
   },
 ]
 

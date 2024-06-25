@@ -1,11 +1,11 @@
+import { FC } from 'react'
 import { Box, Button } from '@mui/material'
-import React from 'react'
 
 type Props = {
-  setStart: React.Dispatch<React.SetStateAction<boolean>>
+  changeStart: () => void
 }
 
-export const StartScreen = ({ setStart }: Props) => {
+export const StartScreen: FC<Props> = ({ changeStart }) => {
   return (
     <Box
       height="100vh"
@@ -16,7 +16,7 @@ export const StartScreen = ({ setStart }: Props) => {
       sx={{
         background: 'linear-gradient(black, #20263c)',
       }}>
-      <Button variant="contained" onClick={() => setStart(true)}>
+      <Button variant="contained" onClick={changeStart}>
         Начать игру
       </Button>
     </Box>

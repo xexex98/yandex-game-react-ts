@@ -1,10 +1,14 @@
-import { useState } from 'react'
-import { StartScreen } from './start_screen'
+import { useCallback, useState } from 'react'
+import { StartScreen } from './StartScreen'
 
 const Game = () => {
   const [start, setStart] = useState(false)
 
-  return <>{start ? 'Game' : <StartScreen setStart={setStart} />}</>
+  const changeStart = useCallback(() => {
+    setStart(true)
+  }, [])
+
+  return <>{start ? 'Game' : <StartScreen changeStart={changeStart} />}</>
 }
 
 export default Game

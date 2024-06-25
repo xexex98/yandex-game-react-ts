@@ -1,7 +1,9 @@
-import React, { useRef, useEffect, FC } from 'react'
+import { FC,useEffect, useRef } from 'react'
+
 import hamster from './hamster.png'
-import './HamsterCanvas.css'
 import { Circle } from './helpers/circle'
+
+import './HamsterCanvas.css'
 
 const arcCenterX = 210
 const arcCenterY = 210
@@ -54,6 +56,7 @@ export const HamsterCanvas: FC<Props> = ({ onClickCircle }) => {
             const y = Math.random() * (innerHeight - r * 2) + r
             const dx = (Math.random() - 0.5) * 5
             const dy = (Math.random() - 0.5) * 5
+
             circleArray.push(new Circle(x, y, dx, dy, r))
           }
         }
@@ -87,7 +90,9 @@ export const HamsterCanvas: FC<Props> = ({ onClickCircle }) => {
       canvasImage.height = window.innerHeight / 2
 
       if (ctx) {
+
         const hamsterImage = new Image()
+
         hamsterImage.src = hamster // Путь к изображению хомяка
 
         hamsterImage.onload = () => {
@@ -96,6 +101,7 @@ export const HamsterCanvas: FC<Props> = ({ onClickCircle }) => {
           ctx.lineWidth = 8
 
           const gradient = ctx.createLinearGradient(20, 0, 400, 0)
+
           gradient.addColorStop(0, '#313366')
           gradient.addColorStop(0.5, '#4a54cd')
           gradient.addColorStop(1, '#313366')
@@ -122,6 +128,7 @@ export const HamsterCanvas: FC<Props> = ({ onClickCircle }) => {
       const distanceFromCenter = Math.sqrt(
         Math.pow(x - arcCenterX, 2) + Math.pow(y - arcCenterY, 2)
       )
+
       if (distanceFromCenter <= arcRadius) {
         // Точка клика находится внутри круга
         onClickCircle()

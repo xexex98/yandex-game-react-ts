@@ -1,30 +1,34 @@
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 export function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    console.info({
       first_name: data.get('first_name'),
       second_name: data.get('second_name'),
       login: data.get('login'),
       email: data.get('email'),
       password: data.get('password'),
       phone: data.get('phone'),
-    })
-  }
+    });
+  };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component='main'
+      maxWidth='xs'
+    >
       <CssBaseline />
       <Box
         sx={{
@@ -32,88 +36,126 @@ export function SignUp() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}>
+        }}
+      >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography
+          component='h1'
+          variant='h5'
+        >
           Sign up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+        <Box
+          component='form'
+          onSubmit={handleSubmit}
+          sx={{ mt: 3 }}
+        >
+          <Grid
+            container
+            spacing={2}
+          >
+            <Grid
+              item
+              xs={12}
+              sm={6}
+            >
               <TextField
-                autoComplete="given-name"
-                name="first_name"
+                autoComplete='given-name'
+                name='first_name'
                 required
                 fullWidth
-                id="first_name"
-                label="First Name"
+                id='first_name'
+                label='First Name'
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+            >
               <TextField
                 required
                 fullWidth
-                id="second_name"
-                label="Second Name"
-                name="second_name"
-                autoComplete="family-name"
+                id='second_name'
+                label='Second Name'
+                name='second_name'
+                autoComplete='family-name'
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextField
                 required
                 fullWidth
-                id="login"
-                label="Login"
-                name="login"
-                autoComplete="username"
+                id='login'
+                label='Login'
+                name='login'
+                autoComplete='username'
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextField
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextField
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='new-password'
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextField
-                autoComplete="tel"
-                name="phone"
+                autoComplete='tel'
+                name='phone'
                 required
                 fullWidth
-                id="phone"
-                label="Phone"
+                id='phone'
+                label='Phone'
               />
             </Grid>
           </Grid>
           <Button
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
+            variant='contained'
+            sx={{ mt: 3, mb: 2 }}
+          >
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid
+            container
+            justifyContent='flex-end'
+          >
             <Grid item>
-              <Link href="login" variant="body2">
+              <Link
+                href='login'
+                variant='body2'
+              >
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -121,5 +163,5 @@ export function SignUp() {
         </Box>
       </Box>
     </Container>
-  )
+  );
 }

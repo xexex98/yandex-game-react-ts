@@ -1,0 +1,45 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.error-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px 100px 20px;
+  text-align: center;
+}
+
+.error-page p,
+.error-page h1,
+.error-page h2,
+.error-page h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.error-page,
+.error-page * {
+  box-sizing: border-box;
+}
+
+.error-page__wrap {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.error-page__code {
+  font-size: 4em;
+}

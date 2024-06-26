@@ -2,6 +2,7 @@ import { ComponentType } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { ErrorPageWrap } from './components/ErrorPageWrap';
 import { ErrorPage } from './pages/error';
 import { ForumPage } from './pages/forum';
 import { GamePage } from './pages/game';
@@ -55,6 +56,26 @@ const routes: RouteObject[] = [
   {
     path: 'leaders',
     element: <LeaderBoardPage />,
+    ErrorBoundary: MyErrorBoundary,
+  },
+  {
+    path: 'error400',
+    element: (
+      <ErrorPageWrap
+        errorCode={404}
+        errorText='Page not found'
+      />
+    ),
+    ErrorBoundary: MyErrorBoundary,
+  },
+  {
+    path: 'error500',
+    element: (
+      <ErrorPageWrap
+        errorCode={500}
+        errorText='Server error'
+      />
+    ),
     ErrorBoundary: MyErrorBoundary,
   },
 ];

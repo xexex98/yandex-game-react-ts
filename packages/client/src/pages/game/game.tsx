@@ -1,14 +1,26 @@
-import { useCallback, useState } from 'react'
-import { StartScreen } from './StartScreen'
+import { useCallback, useState } from 'react';
 
+import { HamsterCanvas } from './HamsterCanvas';
+import { StartScreen } from './StartScreen';
+  
 const Game = () => {
-  const [start, setStart] = useState(false)
-
+  const [countClick, setCountClick] = useState<number>(0);
+  const [start, setStart] = useState(false);
+    
+  const onClickCircle = useCallback(() => {
+    setCountClick((prev) => prev + 1);
+  }, []);
+    
   const changeStart = useCallback(() => {
     setStart(true)
-  }, [])
+  }, []);
 
-  return <>{start ? 'Game' : <StartScreen changeStart={changeStart} />}</>
-}
+  return (
+    <>
+      <div>Game: count click-{countClick}</div>
+      {start ? <HamsterCanvas onClickCircle={onClickCircle} /> : <StartScreen changeStart={changeStart}   
+    </>
+  );
+};
 
-export default Game
+export default Game;

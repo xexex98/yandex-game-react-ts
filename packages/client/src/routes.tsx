@@ -1,17 +1,18 @@
-import { ComponentType } from 'react'
-import { SignIn } from './pages/login'
-import { MainPage } from './pages/main'
-import { RegistrationPage } from './pages/registration'
-import { ProfilePage } from './pages/profile'
-import { ForumPage } from './pages/forum'
-import { GamePage } from './pages/game'
-import { TopicPage } from './pages/topic'
-import { LeaderBoardPage } from './pages/leader_board'
-import { ErrorPage } from './pages/error'
-import { RouteObject } from 'react-router-dom'
-import { ErrorBoundary } from './components/ErrorBoundary'
+import { ComponentType } from 'react';
+import { RouteObject } from 'react-router-dom';
 
-const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { ErrorPage } from './pages/error';
+import { ForumPage } from './pages/forum';
+import { GamePage } from './pages/game';
+import { LeaderBoardPage } from './pages/leader_board';
+import { SignIn } from './pages/login';
+import { MainPage } from './pages/main';
+import { ProfilePage } from './pages/profile';
+import { LazySignUp } from './pages/registration';
+import { TopicPage } from './pages/topic';
+
+const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType;
 
 const routes: RouteObject[] = [
   {
@@ -27,7 +28,7 @@ const routes: RouteObject[] = [
   },
   {
     path: 'registration',
-    element: <RegistrationPage />,
+    element: <LazySignUp />,
     ErrorBoundary: MyErrorBoundary,
   },
   {
@@ -56,6 +57,6 @@ const routes: RouteObject[] = [
     element: <LeaderBoardPage />,
     ErrorBoundary: MyErrorBoundary,
   },
-]
+];
 
-export default routes
+export default routes;

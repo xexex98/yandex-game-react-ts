@@ -1,31 +1,30 @@
 import 'dayjs/locale/ru';
 
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { FC } from 'react';
 
 type Card = {
   id: number;
   title: string;
-  shortDescription: string;
+  rating?: number;
+  content: string;
   date: Date;
 };
+
 type TopicProps = {
   card: Card;
 };
+
 dayjs.locale('ru');
-export const Topic: FC<TopicProps> = ({ card }) => {
+export const TopicCard: FC<TopicProps> = ({ card }) => {
   const transformDate = (date: Date) => {
     return dayjs(date).format('DD MMMM YYYY HH:mm');
   };
 
   return (
     <React.Fragment>
-      <Card sx={{ display: 'flex', width: '100%', cursor: 'pointer' }}>
+      <Card sx={{ display: 'flex', width: '100%' }}>
         <Box
           component='div'
           sx={{
@@ -38,44 +37,54 @@ export const Topic: FC<TopicProps> = ({ card }) => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
+          {card?.rating && (
+            <Typography
+              component='h3'
+              variant='caption'
+              sx={{
+                width: 'max-content',
+              }}
+            >
+              Рейтинг: {card.rating}
+            </Typography>
+          )}
         </Box>
         <CardContent
           sx={{
             display: 'flex',
-            justifyContent: 'space-between',
+            flexDirection: 'column',
             width: '100%',
-            gap: 1.5,
+            gap: 1,
+          }}
+          style={{
+            padding: '8px',
           }}
         >
           <Box component='div'>
             <Typography
               component='div'
-              variant='h5'
+              variant='subtitle1'
             >
               {card.title}
             </Typography>
             <Typography
-              variant='subtitle1'
-              color='text.secondary'
+              variant='subtitle2'
               component='h2'
             >
-              {card.shortDescription}
+              {card.content}
             </Typography>
           </Box>
           <Box
             sx={{
               display: 'flex',
-              alignItems: 'flex-end',
-              width: 120,
+              justifyContent: 'flex-end',
+              width: '100%',
             }}
           >
             <Typography
               variant='caption'
               color='text.secondary'
               component='h4'
-              sx={{
-                width: 120,
-              }}
             >
               {transformDate(card.date)}
             </Typography>

@@ -1,8 +1,7 @@
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Box, Container, Link, Typography } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 
-import { Topic } from './components/Topic';
+import { TopicCard } from '../../components/TopicCard';
 
 export const ForumPage = () => {
   const topics = [
@@ -26,38 +25,52 @@ export const ForumPage = () => {
     },
   ];
 
+  const showForumPage = !location.pathname.includes('forum/topic');
+
   return (
     <Container
       component='main'
       maxWidth='xl'
     >
-      <Typography
-        component='h2'
-        variant='h5'
-        sx={{
-          textAlign: 'center',
-        }}
-      >
-        Forum
-      </Typography>
-      <Box
-        sx={{
-          marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 1,
-        }}
-      >
-        {topics.map((card) => {
-          return (
-            <Topic
-              key={card.id}
-              card={card}
-            />
-          );
-        })}
-      </Box>
+      {showForumPage && (
+        <>
+          <Typography
+            component='h2'
+            variant='h5'
+            sx={{
+              textAlign: 'center',
+            }}
+          >
+            Forum
+          </Typography>
+          <Box
+            sx={{
+              marginTop: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            {topics.map((card) => {
+              return (
+                <Link
+                  href={`/forum/topic/${card.id}`}
+                  key={card.id}
+                  sx={{
+                    width: '100%',
+                  }}
+                >
+                  <TopicCard
+                    card={{ ...card, content: card.shortDescription }}
+                  />
+                </Link>
+              );
+            })}
+          </Box>
+        </>
+      )}
+      <Outlet />
     </Container>
   );
 };

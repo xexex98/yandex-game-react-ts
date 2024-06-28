@@ -1,6 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 
 import { TopicCard } from '../../components/TopicCard';
+import { Comment } from './components/Comment';
 
 export const TopicPage = () => {
   const cards = [
@@ -19,6 +20,11 @@ export const TopicPage = () => {
       date: new Date(),
     },
   ];
+
+  const sendComment = (value: string) => {
+    // eslint-disable-next-line no-console
+    console.log(value);
+  };
 
   return (
     <Container
@@ -42,6 +48,7 @@ export const TopicPage = () => {
           marginTop: 4,
         }}
       >
+        <Comment sendComment={sendComment} />
         {cards.map((card) => {
           return (
             <TopicCard

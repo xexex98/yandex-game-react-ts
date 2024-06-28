@@ -70,14 +70,16 @@ export function SignUp(): JSX.Element {
 
     setFormErrors(validationErrors);
 
-    console.info({
-      first_name: data.get('first_name'),
-      second_name: data.get('second_name'),
-      login: data.get('login'),
-      email: data.get('email'),
-      password: data.get('password'),
-      phone: data.get('phone'),
-    });
+    if (Object.keys(validationErrors).length === 0) {
+      console.info({
+        first_name: data.get('first_name'),
+        second_name: data.get('second_name'),
+        login: data.get('login'),
+        email: data.get('email'),
+        password: data.get('password'),
+        phone: data.get('phone'),
+      });
+    }
   };
 
   return (

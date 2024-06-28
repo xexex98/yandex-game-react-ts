@@ -98,7 +98,8 @@ export const LeaderBoardPage = () => {
                 <Box
                   key={index}
                   style={{
-                    order: index === 0 ? 2 : index,
+                    gridColumn: index === 0 ? '2/3' : '',
+                    gridRow: 1,
                   }}
                 >
                   <CardTop3User
@@ -108,7 +109,6 @@ export const LeaderBoardPage = () => {
                 </Box>
               );
             })}
-            {users.length === 2 && <Box sx={{ order: 3 }} />}
           </Box>
 
           <Box

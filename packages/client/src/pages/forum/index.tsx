@@ -2,6 +2,7 @@ import { Box, Container, Link, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import { TopicCard } from '../../components/TopicCard';
+import { AddTopic } from './components/AddTopic';
 
 export const ForumPage = () => {
   const topics = [
@@ -43,6 +44,15 @@ export const ForumPage = () => {
           >
             Forum
           </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginTop: 2,
+            }}
+          >
+            <AddTopic />
+          </Box>
           <Box
             sx={{
               marginTop: 4,

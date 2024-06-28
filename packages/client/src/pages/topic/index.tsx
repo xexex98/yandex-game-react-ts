@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from '@mui/material';
 
+import { BackButton } from '../../components/BackButton';
 import { TopicCard } from '../../components/TopicCard';
 import { Comment } from './components/Comment';
 
@@ -39,6 +40,7 @@ export const TopicPage = () => {
       >
         Topic
       </Typography>
+      <BackButton href='/forum' />
       <Box
         sx={{
           display: 'flex',

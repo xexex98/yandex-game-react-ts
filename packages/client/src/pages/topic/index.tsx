@@ -1,27 +1,10 @@
 import { Box, Container, Typography } from '@mui/material';
 
 import { BackButton } from '../../components/BackButton';
-import { TopicCard } from '../../components/TopicCard';
 import { Comment } from './components/Comment';
+import { ListComment } from './components/ListComment';
 
 export const TopicPage = () => {
-  const cards = [
-    {
-      id: 1,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 2,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-  ];
-
   const sendComment = (value: string) => {
     console.info(value);
   };
@@ -50,14 +33,7 @@ export const TopicPage = () => {
         }}
       >
         <Comment sendComment={sendComment} />
-        {cards.map((card) => {
-          return (
-            <TopicCard
-              card={{ ...card, content: card.comment, title: card.name }}
-              key={card.id}
-            />
-          );
-        })}
+        <ListComment />
       </Box>
     </Container>
   );

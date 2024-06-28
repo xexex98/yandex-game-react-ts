@@ -1,31 +1,10 @@
-import { Box, Container, Link, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
-import { TopicCard } from '../../components/TopicCard';
 import { AddTopic } from './components/AddTopic';
+import { ListTopic } from './components/ListTopic';
 
 export const ForumPage = () => {
-  const topics = [
-    {
-      id: 1,
-      title: 'Title topic',
-      shortDescription: 'short description topick',
-      date: new Date(),
-    },
-    {
-      id: 2,
-      title: 'Title topic',
-      shortDescription: 'short description topick',
-      date: new Date(),
-    },
-    {
-      id: 3,
-      title: 'Title topic',
-      shortDescription: 'short description topick',
-      date: new Date(),
-    },
-  ];
-
   const showForumPage = !location.pathname.includes('forum/topic');
 
   return (
@@ -53,31 +32,7 @@ export const ForumPage = () => {
           >
             <AddTopic />
           </Box>
-          <Box
-            sx={{
-              marginTop: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 1,
-            }}
-          >
-            {topics.map((card) => {
-              return (
-                <Link
-                  href={`/forum/topic/${card.id}`}
-                  key={card.id}
-                  sx={{
-                    width: '100%',
-                  }}
-                >
-                  <TopicCard
-                    card={{ ...card, content: card.shortDescription }}
-                  />
-                </Link>
-              );
-            })}
-          </Box>
+          <ListTopic />
         </>
       )}
       <Outlet />

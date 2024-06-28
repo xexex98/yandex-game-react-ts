@@ -11,8 +11,3 @@
     opacity: 100%;
   }
 }
-
-.test {
-  display: flex;
-  flex-grow: calc();
-}

@@ -8,16 +8,62 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 
-export function SignIn() {
+import { validateAllFields, validateField } from '../../helpers/validate';
+
+type FormSignIn = {
+  email: string;
+  password: string;
+};
+
+type FormSignInErrors = {
+  email?: string;
+  password?: string;
+};
+
+export function SignIn(): JSX.Element {
+  const [formValues, setFormValues] = useState<FormSignIn>({
+    email: '',
+    password: '',
+  });
+
+  const [formErrors, setFormErrors] = useState<FormSignInErrors>({});
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    const error = validateField(name, value);
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    console.info({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const validationErrors = validateAllFields(formValues);
+
+    setFormErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      console.info({
+        email: data.get('email'),
+        password: data.get('password'),
+      });
+    }
   };
 
   return (
@@ -44,11 +90,17 @@ export function SignIn() {
           Sign in
         </Typography>
         <Box
+          noValidate
           component='form'
           onSubmit={handleSubmit}
           sx={{ mt: 1 }}
         >
           <TextField
+            onBlur={handleBlur}
+            value={formValues.email}
+            error={Boolean(formErrors.email)}
+            helperText={formErrors.email}
+            onChange={handleChange}
             margin='normal'
             required
             fullWidth
@@ -59,6 +111,11 @@ export function SignIn() {
             autoFocus
           />
           <TextField
+            onBlur={handleBlur}
+            value={formValues.password}
+            error={Boolean(formErrors.password)}
+            helperText={formErrors.password}
+            onChange={handleChange}
             margin='normal'
             required
             fullWidth

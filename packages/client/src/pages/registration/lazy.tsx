@@ -8,11 +8,67 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+
+import { validateAllFields, validateField } from '../../helpers/validate';
+
+type FormSignUp = {
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  password: string;
+  phone: string;
+};
+
+type FormSignUpErrors = {
+  first_name?: string;
+  second_name?: string;
+  login?: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+};
 
 export function SignUp(): JSX.Element {
+  const [formValues, setFormValues] = useState<FormSignUp>({
+    first_name: '',
+    second_name: '',
+    login: '',
+    email: '',
+    password: '',
+    phone: '',
+  });
+
+  const [formErrors, setFormErrors] = useState<FormSignUpErrors>({});
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    const error = validateField(name, value);
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    const validationErrors = validateAllFields(formValues);
+
+    setFormErrors(validationErrors);
 
     console.info({
       first_name: data.get('first_name'),
@@ -51,6 +107,7 @@ export function SignUp(): JSX.Element {
           component='form'
           onSubmit={handleSubmit}
           sx={{ mt: 3 }}
+          noValidate
         >
           <Grid
             container
@@ -62,13 +119,17 @@ export function SignUp(): JSX.Element {
               sm={6}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.first_name}
+                error={Boolean(formErrors.first_name)}
+                helperText={formErrors.first_name}
+                onChange={handleChange}
                 autoComplete='given-name'
                 name='first_name'
                 required
                 fullWidth
                 id='first_name'
                 label='First Name'
-                autoFocus
               />
             </Grid>
             <Grid
@@ -77,6 +138,11 @@ export function SignUp(): JSX.Element {
               sm={6}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.second_name}
+                error={Boolean(formErrors.second_name)}
+                helperText={formErrors.second_name}
+                onChange={handleChange}
                 required
                 fullWidth
                 id='second_name'
@@ -90,6 +156,11 @@ export function SignUp(): JSX.Element {
               xs={12}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.login}
+                error={Boolean(formErrors.login)}
+                helperText={formErrors.login}
+                onChange={handleChange}
                 required
                 fullWidth
                 id='login'
@@ -103,6 +174,11 @@ export function SignUp(): JSX.Element {
               xs={12}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.email}
+                error={Boolean(formErrors.email)}
+                helperText={formErrors.email}
+                onChange={handleChange}
                 required
                 fullWidth
                 id='email'
@@ -116,6 +192,11 @@ export function SignUp(): JSX.Element {
               xs={12}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.password}
+                error={Boolean(formErrors.password)}
+                helperText={formErrors.password}
+                onChange={handleChange}
                 required
                 fullWidth
                 name='password'
@@ -130,6 +211,11 @@ export function SignUp(): JSX.Element {
               xs={12}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.phone}
+                error={Boolean(formErrors.phone)}
+                helperText={formErrors.phone}
+                onChange={handleChange}
                 autoComplete='tel'
                 name='phone'
                 required

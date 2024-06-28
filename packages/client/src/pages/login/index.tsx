@@ -108,7 +108,6 @@ export function SignIn(): JSX.Element {
             label='Email Address'
             name='email'
             autoComplete='email'
-            autoFocus
           />
           <TextField
             onBlur={handleBlur}

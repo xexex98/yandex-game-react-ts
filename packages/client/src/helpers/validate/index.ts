@@ -55,9 +55,9 @@ export function validateField(name: string, value: string): string {
   return '';
 }
 
-type AllFields = Record<string, string>;
+type Fields = Record<string, string>;
 
-export function validateAllFields(fields: AllFields) {
+export function validateAllFields(fields: Fields) {
   const errors: Record<string, string> = {};
 
   for (const [name, value] of Object.entries(fields)) {

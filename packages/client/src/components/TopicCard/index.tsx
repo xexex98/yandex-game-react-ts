@@ -10,6 +10,7 @@ type Card = {
   rating?: number;
   content: string;
   date: Date;
+  avatar?: string;
 };
 
 type TopicProps = {
@@ -36,7 +37,12 @@ export const TopicCard: FC<TopicProps> = ({ card }) => {
             gap: '4px',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
+          {card.avatar}
+          <Avatar
+            sx={{ m: 1, bgcolor: 'secondary.main' }}
+            src={card.avatar}
+            alt=''
+          />
           {card?.rating && (
             <Typography
               component='h3'

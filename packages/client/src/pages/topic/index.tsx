@@ -22,8 +22,7 @@ export const TopicPage = () => {
   ];
 
   const sendComment = (value: string) => {
-    // eslint-disable-next-line no-console
-    console.log(value);
+    console.info(value);
   };
 
   return (

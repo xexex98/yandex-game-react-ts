@@ -29,19 +29,52 @@ export const LeaderBoardPage = () => {
       login: 'player',
       rating: 3000,
     },
+    {
+      login: 'player',
+      rating: 3000,
+    },
+    {
+      login: 'player',
+      rating: 3000,
+    },
+    {
+      login: 'player',
+      rating: 3000,
+    },
+    {
+      login: 'player',
+      rating: 3000,
+    },
+    {
+      login: 'player',
+      rating: 3000,
+    },
+    {
+      login: 'player',
+      rating: 3000,
+    },
+    {
+      login: 'player',
+      rating: 3000,
+    },
   ];
 
   return (
     <Box
       sx={{
-        background: 'linear-gradient(black, #20263c)',
+        background: '#2C2F35',
+        height: '100vh',
+        color: '#FFFEFD',
       }}
     >
-      <Container component='main'>
+      <Container
+        component='main'
+        sx={{ display: 'flex', flexDirection: 'column' }}
+      >
         <Typography
           component='h2'
           variant='h5'
-          sx={{ textAlign: 'center', marginBottom: 8 }}
+          sx={{ textAlign: 'center', margin: '24px 0' }}
         >
           Leaderboard
         </Typography>
@@ -88,7 +121,7 @@ export const LeaderBoardPage = () => {
               marginTop: 10,
             }}
           >
-            {users.slice(3).map((card, index) => {
+            {users.slice(3, 13).map((card, index) => {
               return (
                 <CardTopUser
                   key={index}

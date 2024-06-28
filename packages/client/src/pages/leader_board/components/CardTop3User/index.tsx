@@ -14,6 +14,7 @@ export const CardTop3User: FC<CardTop3UserProps> = ({ position, card }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        color: '#FFFEFD',
       }}
     >
       <Box sx={{ position: 'relative' }}>

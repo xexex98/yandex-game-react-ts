@@ -12,9 +12,10 @@ export const CardTopUser: FC<CardTop3UserProps> = ({ card, position }) => {
         alignItems: 'center',
         padding: '4px 8px',
         gap: 2.5,
-        background: 'red',
+        background: '#5256D5',
         borderRadius: '30px',
         width: '100%',
+        color: '#FFFEFD',
       }}
     >
       <Typography

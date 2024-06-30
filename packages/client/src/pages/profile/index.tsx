@@ -54,8 +54,7 @@ export const ProfilePage = () => {
   const handleChangeInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const input = e.currentTarget;
-      const name = input.name;
-      const value = input.value;
+      const { name, value } = input;
       const data = { ...userData, [name]: value };
 
       setUserData(data);

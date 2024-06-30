@@ -11,9 +11,7 @@ type TProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const PasswordModal = (props: TProps) => {
-  const { showModal, setShowModal } = props;
-
+export const PasswordModal = ({ showModal, setShowModal }: TProps) => {
   const handlePassword = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

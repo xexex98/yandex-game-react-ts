@@ -1,0 +1,13 @@
+.animation-end-game {
+  animation: animation-end 1.5s ease-in-out;
+}
+
+@keyframes animation-end {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}

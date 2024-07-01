@@ -42,7 +42,7 @@ const routes: RouteObject[] = [
     ErrorBoundary: MyErrorBoundary,
     children: [
       {
-        path: 'topic',
+        path: 'topic/:id',
         element: <TopicPage />,
       },
     ],

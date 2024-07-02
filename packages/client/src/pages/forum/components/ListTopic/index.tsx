@@ -201,26 +201,23 @@ export const ListTopic = () => {
     setCurrantPage(page);
   };
 
-  const slotCard = (card: Card) => {
-    return (
-      <Link
-        href={`/forum/topic/${card.id}`}
-        key={card.id}
-        sx={{
-          width: '100%',
-        }}
-      >
-        <TopicCard card={{ ...card, content: card.shortDescription }} />
-      </Link>
-    );
-  };
-
   return (
     <ListForum
       list={topics.slice(10 * (currantPage - 1), 10 * currantPage)}
-      slot={slotCard}
       changePage={changeCurantPage}
       maxLength={topics.length}
-    />
+    >
+      {(card) => (
+        <Link
+          href={`/forum/topic/${card.id}`}
+          key={card.id}
+          sx={{
+            width: '100%',
+          }}
+        >
+          <TopicCard card={{ ...card, content: card.shortDescription }} />
+        </Link>
+      )}
+    </ListForum>
   );
 };

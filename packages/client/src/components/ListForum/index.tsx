@@ -15,8 +15,7 @@ export const ListForum = <T,>({
   changePage,
 }: ListTopicProps<T>) => {
   const [countPage] = useState(Math.ceil(maxLength / 10));
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_currentPage, setCurrentPage] = useState(1);
+  const [, setCurrentPage] = useState(1);
 
   const changeCurantPage = (_event: unknown, page: number) => {
     setCurrentPage(page);

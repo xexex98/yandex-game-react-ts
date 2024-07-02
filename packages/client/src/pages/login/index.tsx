@@ -13,18 +13,18 @@ import { useState } from 'react';
 import { validateAllFields, validateField } from '../../helpers/validate';
 
 type FormSignIn = {
-  email: string;
+  login: string;
   password: string;
 };
 
 type FormSignInErrors = {
-  email?: string;
+  login?: string;
   password?: string;
 };
 
 export function SignIn(): JSX.Element {
   const [formValues, setFormValues] = useState<FormSignIn>({
-    email: '',
+    login: '',
     password: '',
   });
 
@@ -58,9 +58,11 @@ export function SignIn(): JSX.Element {
 
     setFormErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    const noErrors = Object.values(validationErrors).every((error) => !error);
+
+    if (noErrors) {
       console.info({
-        email: data.get('email'),
+        login: data.get('login'),
         password: data.get('password'),
       });
     }
@@ -97,17 +99,17 @@ export function SignIn(): JSX.Element {
         >
           <TextField
             onBlur={handleBlur}
-            value={formValues.email}
-            error={Boolean(formErrors.email)}
-            helperText={formErrors.email}
+            value={formValues.login}
+            error={Boolean(formErrors.login)}
+            helperText={formErrors.login}
             onChange={handleChange}
             margin='normal'
             required
             fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
+            name='login'
+            label='Login'
+            id='login'
+            autoComplete='username'
           />
           <TextField
             onBlur={handleBlur}

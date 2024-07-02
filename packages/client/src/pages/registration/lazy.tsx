@@ -70,7 +70,9 @@ export function SignUp(): JSX.Element {
 
     setFormErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    const noErrors = Object.values(validationErrors).every((error) => !error);
+
+    if (noErrors) {
       console.info({
         first_name: data.get('first_name'),
         second_name: data.get('second_name'),

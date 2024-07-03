@@ -7,6 +7,8 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import routes from './routes';
 import { store } from './store';
 
+import './style.css';
+
 const router = createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

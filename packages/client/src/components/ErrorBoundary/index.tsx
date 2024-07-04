@@ -1,11 +1,14 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 
+import './ErrorBoundary.css';
+
 type ErrorBoundaryProps = {
   children: ReactNode;
 };
 
 type ErrorBoundaryState = {
   hasError: boolean;
+  error?: string;
 };
 
 export class ErrorBoundary extends Component<
@@ -26,6 +29,7 @@ export class ErrorBoundary extends Component<
     console.error('ErrorBoundary', error, errorInfo);
     this.setState({
       hasError: true,
+      error: error.message,
     });
   }
 
@@ -34,7 +38,21 @@ export class ErrorBoundary extends Component<
     const { children } = this.props;
 
     if (hasError) {
-      return <h1>Что-то пошло не так.</h1>;
+      return (
+        <div className='error-page'>
+          <div className='error-page__wrap'>
+            <h1>Oops!</h1>
+            <p className='error-page__descr'>
+              Sorry, an unexpected error has occurred.
+            </p>
+            {this.state.error ? (
+              <h3 className='error-page__text'>{this.state.error}</h3>
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
+      );
     }
 
     return children;

@@ -9,38 +9,36 @@ import Typography from '@mui/material/Typography';
 import React, { useCallback, useRef, useState } from 'react';
 
 import { PasswordModal } from '../../components/PasswordModal';
+import { validateAllFields, validateField } from '../../helpers/validate';
 
 type TUserData = {
   login: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  second_name: string;
   email: string;
   phone: string;
-  avatar: string;
 };
+
+type TUserErrors = Partial<TUserData>;
+
+const UData: TUserData = {
+  login: 'johny',
+  first_name: 'John',
+  second_name: 'Doe',
+  email: 'example@mail.com',
+  phone: '+79993332211',
+};
+
+const AVATAR_URL =
+  'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x';
 
 export const ProfilePage = () => {
   const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const UData: TUserData = {
-    login: 'johny',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'example@mail.com',
-    phone: '+79993332211',
-    avatar:
-      'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x',
-  };
-  const [userData, setUserData] = useState(UData);
-  const [avatarUrl, setAvatarUrl] = useState(userData.avatar);
 
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // const data = new FormData(e.currentTarget);
-
-    // console.log('Profile submit', data);
-  }, []);
+  const [formValues, setFormValues] = useState(UData);
+  const [formErrors, setFormErrors] = useState<TUserErrors>({});
+  const [avatarUrl, setAvatarUrl] = useState(AVATAR_URL);
 
   const handleChangeAvatar = useCallback(() => {
     if (!inputRef.current?.files?.length) {
@@ -51,16 +49,46 @@ export const ProfilePage = () => {
     setAvatarUrl(URL.createObjectURL(file));
   }, []);
 
-  const handleChangeInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const input = e.currentTarget;
-      const { name, value } = input;
-      const data = { ...userData, [name]: value };
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
-      setUserData(data);
-    },
-    [userData]
-  );
+    const error = validateField(name, value);
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    const validationErrors = validateAllFields(formValues);
+
+    setFormErrors(validationErrors);
+
+    const noErrors = Object.values(validationErrors).every((error) => !error);
+
+    if (noErrors) {
+      console.info({
+        login: data.get('login'),
+        first_name: data.get('first_name'),
+        second_name: data.get('second_name'),
+        email: data.get('email'),
+        phone: data.get('phone'),
+      });
+    }
+  };
 
   return (
     <Container
@@ -86,6 +114,7 @@ export const ProfilePage = () => {
           component='form'
           onSubmit={handleSubmit}
           sx={{ mt: 3 }}
+          noValidate
         >
           <Grid
             container
@@ -126,15 +155,17 @@ export const ProfilePage = () => {
               xs={12}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.login}
+                error={Boolean(formErrors.login)}
+                helperText={formErrors.login}
+                onChange={handleChangeInput}
                 required
                 fullWidth
                 id='login'
                 label='Login'
                 name='login'
-                autoComplete='Username'
-                value={userData.login}
-                onChange={handleChangeInput}
-                autoFocus
+                autoComplete='username'
               />
             </Grid>
             <Grid
@@ -143,14 +174,17 @@ export const ProfilePage = () => {
               sm={6}
             >
               <TextField
-                autoComplete='First name'
-                name='firstName'
+                onBlur={handleBlur}
+                value={formValues.first_name}
+                error={Boolean(formErrors.first_name)}
+                helperText={formErrors.first_name}
+                onChange={handleChangeInput}
+                autoComplete='given-name'
+                name='first_name'
                 required
                 fullWidth
                 id='first_name'
                 label='First Name'
-                value={userData.firstName}
-                onChange={handleChangeInput}
               />
             </Grid>
             <Grid
@@ -159,14 +193,17 @@ export const ProfilePage = () => {
               sm={6}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.second_name}
+                error={Boolean(formErrors.second_name)}
+                helperText={formErrors.second_name}
+                onChange={handleChangeInput}
                 required
                 fullWidth
                 id='second_name'
-                label='Second Name'
-                name='lastName'
-                autoComplete='Second name'
-                value={userData.lastName}
-                onChange={handleChangeInput}
+                label='Last Name'
+                name='second_name'
+                autoComplete='family-name'
               />
             </Grid>
             <Grid
@@ -175,14 +212,17 @@ export const ProfilePage = () => {
               sm={6}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.email}
+                error={Boolean(formErrors.email)}
+                helperText={formErrors.email}
+                onChange={handleChangeInput}
                 required
                 fullWidth
                 id='email'
-                label='Email'
+                label='Email Address'
                 name='email'
-                autoComplete='Email'
-                value={userData.email}
-                onChange={handleChangeInput}
+                autoComplete='email'
               />
             </Grid>
             <Grid
@@ -191,14 +231,17 @@ export const ProfilePage = () => {
               sm={6}
             >
               <TextField
+                onBlur={handleBlur}
+                value={formValues.phone}
+                error={Boolean(formErrors.phone)}
+                helperText={formErrors.phone}
+                onChange={handleChangeInput}
+                autoComplete='tel'
+                name='phone'
                 required
                 fullWidth
                 id='phone'
-                label='Phone number'
-                name='phone'
-                autoComplete='Phone'
-                value={userData.phone}
-                onChange={handleChangeInput}
+                label='Phone'
               />
             </Grid>
             <Grid

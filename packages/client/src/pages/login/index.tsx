@@ -8,16 +8,64 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 
-export function SignIn() {
+import { validateAllFields, validateField } from '../../helpers/validate';
+
+type FormSignIn = {
+  login: string;
+  password: string;
+};
+
+type FormSignInErrors = {
+  login?: string;
+  password?: string;
+};
+
+export function SignIn(): JSX.Element {
+  const [formValues, setFormValues] = useState<FormSignIn>({
+    login: '',
+    password: '',
+  });
+
+  const [formErrors, setFormErrors] = useState<FormSignInErrors>({});
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    const error = validateField(name, value);
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    console.info({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const validationErrors = validateAllFields(formValues);
+
+    setFormErrors(validationErrors);
+
+    const noErrors = Object.values(validationErrors).every((error) => !error);
+
+    if (noErrors) {
+      console.info({
+        login: data.get('login'),
+        password: data.get('password'),
+      });
+    }
   };
 
   return (
@@ -44,21 +92,31 @@ export function SignIn() {
           Sign in
         </Typography>
         <Box
+          noValidate
           component='form'
           onSubmit={handleSubmit}
           sx={{ mt: 1 }}
         >
           <TextField
+            onBlur={handleBlur}
+            value={formValues.login}
+            error={Boolean(formErrors.login)}
+            helperText={formErrors.login}
+            onChange={handleChange}
             margin='normal'
             required
             fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
+            name='login'
+            label='Login'
+            id='login'
+            autoComplete='username'
           />
           <TextField
+            onBlur={handleBlur}
+            value={formValues.password}
+            error={Boolean(formErrors.password)}
+            helperText={formErrors.password}
+            onChange={handleChange}
             margin='normal'
             required
             fullWidth

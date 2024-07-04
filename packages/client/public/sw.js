@@ -1,6 +1,6 @@
-const CACHE_NAME = 'game-cache-v1';
+importScripts('./sw-urls.js')
 
-const URLS = ['/'];
+const CACHE_NAME = 'game-cache-v1';
 
 self.addEventListener("install", event => {
   console.log("install");

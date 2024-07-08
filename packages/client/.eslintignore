@@ -4,3 +4,4 @@ public
 .eslintcache
 vite.config.ts
 jest.config.js
+generate-sw-urls.js

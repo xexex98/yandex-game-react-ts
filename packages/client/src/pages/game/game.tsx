@@ -1,18 +1,27 @@
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/storeHooks';
+import {
+  startGame,
+  stopGame,
+} from '../../store/modules/gameState/gameStateSlice';
+import { EndScreen } from './EndScreen';
 import { HamsterCanvas } from './HamsterCanvas';
 import { StartScreen } from './StartScreen';
-import { useGameData } from './useGameData'
+import { useGameData } from './useGameData';
 
 const Game = () => {
-  const {
-    onClickFullScreen,
-    refToggler,
-    onClickCircle,
-    changeStart,
-    countClick,
-    start
-  } = useGameData()
+  const { onClickFullScreen, refToggler, onClickCircle, countClick } =
+    useGameData();
+
+  const gameStatus = useAppSelector((state) => state.gameState.status);
+  const dispatch = useAppDispatch();
+  const changeStart = () => {
+    dispatch(startGame());
+  };
+  const endGame = () => {
+    dispatch(stopGame());
+  };
 
   return (
     <>
@@ -24,10 +33,22 @@ const Game = () => {
       >
         Перейти в fullscreen режим
       </Button>
-      {start ? (
-        <HamsterCanvas onClickCircle={onClickCircle} />
+      {gameStatus === 'started' ? (
+        <Button
+          variant='contained'
+          onClick={endGame}
+        >
+          Закончить игру
+        </Button>
       ) : (
+        <></>
+      )}
+      {gameStatus === 'started' ? (
+        <HamsterCanvas onClickCircle={onClickCircle} />
+      ) : gameStatus === 'new' ? (
         <StartScreen changeStart={changeStart} />
+      ) : (
+        <EndScreen value={7} />
       )}
     </>
   );

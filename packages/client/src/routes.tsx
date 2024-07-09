@@ -2,6 +2,7 @@ import { ComponentType } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { PrivateRoute } from './components/PrivateRoute';
 import { ErrorPage } from './pages/error';
 import { ForumPage } from './pages/forum';
 import { GamePage } from './pages/game';
@@ -32,9 +33,14 @@ const routes: RouteObject[] = [
     ErrorBoundary: MyErrorBoundary,
   },
   {
-    path: 'profile',
-    element: <ProfilePage />,
-    ErrorBoundary: MyErrorBoundary,
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+        ErrorBoundary: MyErrorBoundary,
+      },
+    ],
   },
   {
     path: 'forum',

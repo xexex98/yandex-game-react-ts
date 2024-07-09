@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from '../../hooks/storeHooks';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   startGame,
   stopGame,

@@ -1,7 +1,8 @@
 import { Box, Button, Typography } from '@mui/material';
 import { FC, MouseEventHandler, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
-import { useAppDispatch } from '../../../hooks/storeHooks';
+import { useAppDispatch } from '../../../store';
 import { newGame } from '../../../store/modules/gameState/gameStateSlice';
 
 // import './style.css';
@@ -53,12 +54,14 @@ export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
         >
           Ваш счет: {value ?? 3000}
         </Typography>
-        <Button
-          onClick={onClick}
-          variant='contained'
-        >
-          На главный экран
-        </Button>
+        <Link to='/'>
+          <Button
+            onClick={onClick}
+            variant='contained'
+          >
+            На главный экран
+          </Button>
+        </Link>
         <Button
           onClick={startNewGame}
           variant='contained'

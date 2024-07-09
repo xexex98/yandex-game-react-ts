@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import { FC, useEffect } from 'react';
 
-import { useAppDispatch } from '../../../hooks/storeHooks';
+import { useAppDispatch } from '../../../store';
 import { newGame } from '../../../store/modules/gameState/gameStateSlice';
 
 type Props = {

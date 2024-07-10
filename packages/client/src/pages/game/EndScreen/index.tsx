@@ -1,7 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
-import { FC, MouseEventHandler } from 'react';
+import { FC, MouseEventHandler, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
-import './style.css';
+import { useAppDispatch } from '../../../store';
+import { newGame } from '../../../store/modules/gameState/gameStateSlice';
+
+// import './style.css';
 
 type EndScreenProps = {
   value: number;
@@ -9,6 +13,12 @@ type EndScreenProps = {
 };
 
 export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
+  const dispatch = useAppDispatch();
+
+  const startNewGame = useCallback(() => {
+    dispatch(newGame());
+  }, []);
+
   return (
     <Box
       height='100vh'
@@ -44,11 +54,19 @@ export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
         >
           Ваш счет: {value ?? 3000}
         </Typography>
+        <Link to='/'>
+          <Button
+            onClick={onClick}
+            variant='contained'
+          >
+            На главный экран
+          </Button>
+        </Link>
         <Button
-          onClick={onClick}
+          onClick={startNewGame}
           variant='contained'
         >
-          На главный экран
+          Новая игра
         </Button>
       </Box>
     </Box>

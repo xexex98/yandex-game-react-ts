@@ -105,21 +105,18 @@ export const ListComment = () => {
     setCurrantPage(page);
   };
 
-  const slotCard = (card: Card) => {
-    return (
-      <TopicCard
-        card={{ ...card, content: card.comment, title: card.name }}
-        key={card.id}
-      />
-    );
-  };
-
   return (
     <ListForum
       list={comments.slice(10 * (currantPage - 1), 10 * currantPage)}
-      slot={slotCard}
       changePage={changeCurantPage}
       maxLength={comments.length}
-    />
+    >
+      {(card: Card) => (
+        <TopicCard
+          card={{ ...card, content: card.comment, title: card.name }}
+          key={card.id}
+        />
+      )}
+    </ListForum>
   );
 };

@@ -1,27 +1,54 @@
-import { useCallback, useState } from 'react';
+import { Button } from '@mui/material';
 
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  startGame,
+  stopGame,
+} from '../../store/modules/gameState/gameStateSlice';
+import { EndScreen } from './EndScreen';
 import { HamsterCanvas } from './HamsterCanvas';
 import { StartScreen } from './StartScreen';
+import { useGameData } from './useGameData';
 
 const Game = () => {
-  const [countClick, setCountClick] = useState<number>(0);
-  const [start, setStart] = useState(false);
+  const { onClickFullScreen, refToggler, onClickCircle, countClick } =
+    useGameData();
 
-  const onClickCircle = useCallback(() => {
-    setCountClick((prev) => prev + 1);
-  }, []);
-
-  const changeStart = useCallback(() => {
-    setStart(true);
-  }, []);
+  const gameStatus = useAppSelector((state) => state.gameState.status);
+  const dispatch = useAppDispatch();
+  const changeStart = () => {
+    dispatch(startGame());
+  };
+  const endGame = () => {
+    dispatch(stopGame());
+  };
 
   return (
     <>
       <div>Game: count click-{countClick}</div>
-      {start ? (
-        <HamsterCanvas onClickCircle={onClickCircle} />
+      <Button
+        ref={refToggler}
+        variant='contained'
+        onClick={onClickFullScreen}
+      >
+        Перейти в fullscreen режим
+      </Button>
+      {gameStatus === 'started' ? (
+        <Button
+          variant='contained'
+          onClick={endGame}
+        >
+          Закончить игру
+        </Button>
       ) : (
+        <></>
+      )}
+      {gameStatus === 'started' ? (
+        <HamsterCanvas onClickCircle={onClickCircle} />
+      ) : gameStatus === 'new' ? (
         <StartScreen changeStart={changeStart} />
+      ) : (
+        <EndScreen value={7} />
       )}
     </>
   );

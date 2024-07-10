@@ -7,7 +7,8 @@ import { Heart } from './elements/Heart';
 import { InfoGame } from './elements/InfoGame';
 import { Timer } from './elements/Timer';
 
-type callBackEndGame = (score: number) => void;
+type callBackEndGame = () => void;
+type callBackStopGame = (score: number) => void;
 
 export class Game {
   canvas: HTMLCanvasElement;
@@ -25,10 +26,15 @@ export class Game {
   private keyUp: (event: KeyboardEvent) => void;
   private resize: () => void;
   private callBackEndGame?: callBackEndGame;
+  private callBackStopGame?: callBackStopGame;
 
   private activeGame: boolean = true;
 
-  constructor(canvas: HTMLCanvasElement, callBackEndGame?: callBackEndGame) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    callBackEndGame?: callBackEndGame,
+    callBackStopGame?: callBackStopGame
+  ) {
     this.callBackEndGame = callBackEndGame;
     this.canvas = canvas;
     this.initBoard();
@@ -58,6 +64,8 @@ export class Game {
       this.timer.setPosition(innerWidth / 2 - 150, innerHeight - 110);
     };
 
+    this.callBackStopGame = callBackStopGame;
+
     window.addEventListener('resize', this.resize);
   }
 
@@ -67,7 +75,7 @@ export class Game {
     this.round();
   }
 
-  endGame() {
+  stopGame() {
     if (!this.activeGame) {
       return;
     }
@@ -78,10 +86,18 @@ export class Game {
     this.arrow.show = false;
     this.timer.show = false;
 
-    if (this.callBackEndGame) {
-      this.callBackEndGame(this.infoGame.score);
-    }
     this.activeGame = false;
+
+    if (this.callBackStopGame) {
+      this.callBackStopGame(this.infoGame.score);
+    }
+  }
+
+  private endGame() {
+    this.stopGame();
+    if (this.callBackEndGame) {
+      this.callBackEndGame();
+    }
   }
 
   private round() {

@@ -1,11 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 import Render from './core/Render';
 import { Game } from './Game';
 
 import './HamsterCanvas.css';
 
-export const HamsterCanvas = () => {
+type Props = {
+  endGame: () => void;
+  setScore: (score: number) => void;
+};
+
+export const HamsterCanvas: FC<Props> = ({ endGame, setScore }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -21,15 +26,13 @@ export const HamsterCanvas = () => {
 
       window.addEventListener('resize', handleResize);
 
-      const game = new Game(canvas, (score: number) => {
-        console.info(score);
-      });
+      const game = new Game(canvas, endGame, setScore);
 
       game.startGame();
 
       return () => {
         window.removeEventListener('resize', handleResize);
-        game.endGame();
+        game.stopGame();
         const context = canvas.getContext('2d');
 
         if (context) {
@@ -37,7 +40,7 @@ export const HamsterCanvas = () => {
         }
       };
     }
-  }, []);
+  });
 
   return (
     <div className='wrapper'>

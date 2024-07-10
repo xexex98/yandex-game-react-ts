@@ -4,7 +4,7 @@ export const useGameData = () => {
   const refToggler = useRef<HTMLButtonElement | null>(null);
   const refIsFullscreen = useRef<boolean>(false);
 
-  const [countClick, setCountClick] = useState<number>(0);
+  const [score, setScore] = useState<number>(0);
 
   const onClickFullScreen = useCallback(() => {
     if (!refIsFullscreen.current) {
@@ -24,14 +24,10 @@ export const useGameData = () => {
     }
   }, []);
 
-  const onClickCircle = useCallback(() => {
-    setCountClick((prev) => prev + 1);
-  }, []);
-
   return {
     onClickFullScreen,
     refToggler,
-    onClickCircle,
-    countClick,
+    setScore,
+    score,
   };
 };

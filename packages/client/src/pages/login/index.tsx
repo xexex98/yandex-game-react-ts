@@ -1,4 +1,5 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,11 +10,10 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { validateAllFields, validateField } from '../../helpers/validate';
-import { RootState, useAppDispatch } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { login } from '../../store/modules/auth/authSlice';
 
 export type FormSignIn = {
@@ -26,7 +26,7 @@ type FormSignInErrors = Partial<FormSignIn>;
 export function SignIn() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { status } = useSelector((state: RootState) => state.auth);
+  const { isLoggedIn, status, error } = useAppSelector((state) => state.auth);
 
   const [formValues, setFormValues] = useState<FormSignIn>({
     login: '',
@@ -36,10 +36,10 @@ export function SignIn() {
   const [formErrors, setFormErrors] = useState<FormSignInErrors>({});
 
   useEffect(() => {
-    if (status === 'success') {
+    if (isLoggedIn) {
       navigate('/profile');
     }
-  }, [status, navigate]);
+  }, [isLoggedIn, navigate]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -141,13 +141,22 @@ export function SignIn() {
           >
             Sign In
           </Button>
+          {status === 'failed' && (
+            <Alert
+              sx={{ mt: 1, mb: 2 }}
+              severity='error'
+              variant='outlined'
+            >
+              {error}
+            </Alert>
+          )}
           <Grid container>
             <Grid
               item
               xs
             >
               <Link
-                href='#'
+                href='/profile'
                 variant='body2'
               >
                 Forgot password?

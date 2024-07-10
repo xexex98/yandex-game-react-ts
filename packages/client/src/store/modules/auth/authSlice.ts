@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { API_URL, APPLICATION_JSON } from '../../../consts';
 import { FormSignIn } from '../../../pages/login';
@@ -7,10 +7,11 @@ import { FormSignUp } from '../../../pages/registration/lazy';
 type AuthState = {
   isLoggedIn: boolean;
   user: AuthUserResponse | null;
+  error: string | null;
   status: 'idle' | 'loading' | 'success' | 'failed';
 };
 
-type AuthUserResponse = {
+export type AuthUserResponse = {
   id: number;
   first_name: string;
   second_name: string;
@@ -31,7 +32,9 @@ export const getCurrentUser = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error('Not authenticated');
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
       }
 
       const data = await response.json();
@@ -55,11 +58,13 @@ export const login = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error('Not authenticated');
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
       }
       await dispatch(getCurrentUser());
     } catch (error) {
-      return rejectWithValue((error as Error).message);
+      return rejectWithValue((error as Error).message || error);
     }
   }
 );
@@ -76,11 +81,34 @@ export const register = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error('Can not register');
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
       }
       await dispatch(getCurrentUser());
     } catch (error) {
-      return rejectWithValue((error as Error).message);
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
+
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',
+        headers: APPLICATION_JSON,
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
     }
   }
 );
@@ -89,17 +117,13 @@ const initialState: AuthState = {
   status: 'idle',
   user: null,
   isLoggedIn: false,
+  error: null,
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.isLoggedIn = false;
-      state.user = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -109,9 +133,12 @@ export const authSlice = createSlice({
         state.isLoggedIn = true;
         state.status = 'success';
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.isLoggedIn = false;
         state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
       })
       .addCase(register.pending, (state) => {
         state.status = 'loading';
@@ -120,29 +147,48 @@ export const authSlice = createSlice({
         state.isLoggedIn = true;
         state.status = 'success';
       })
-      .addCase(register.rejected, (state) => {
+      .addCase(register.rejected, (state, action) => {
         state.isLoggedIn = false;
         state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
       })
       .addCase(getCurrentUser.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(
-        getCurrentUser.fulfilled,
-        (state, action: PayloadAction<AuthUserResponse>) => {
-          state.isLoggedIn = true;
-          state.user = action.payload;
-          state.status = 'success';
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.user = action.payload;
+        state.status = 'success';
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
         }
-      )
-      .addCase(getCurrentUser.rejected, (state) => {
+        state.isLoggedIn = false;
+        state.user = null;
+        state.status = 'failed';
+      })
+      .addCase(logout.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.user = null;
+        state.status = 'success';
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
         state.isLoggedIn = false;
         state.user = null;
         state.status = 'failed';
       });
   },
 });
-
-export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

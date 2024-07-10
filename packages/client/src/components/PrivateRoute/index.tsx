@@ -1,19 +1,30 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { RootState, useAppDispatch } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { getCurrentUser } from '../../store/modules/auth/authSlice';
+import { Loader } from '../Loader';
 
 export const PrivateRoute = () => {
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const { isLoggedIn, status } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && status === 'idle') {
       dispatch(getCurrentUser());
     }
-  }, [isLoggedIn, dispatch]);
+  }, [dispatch, isLoggedIn, status]);
 
-  return isLoggedIn ? <Outlet /> : <Navigate to='/login' />;
+  if (status === 'loading' || status === 'idle') {
+    return <Loader />;
+  }
+
+  return isLoggedIn ? (
+    <Outlet />
+  ) : (
+    <Navigate
+      to='/login'
+      replace
+    />
+  );
 };

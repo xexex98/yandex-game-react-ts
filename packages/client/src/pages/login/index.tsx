@@ -1,4 +1,5 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,27 +9,37 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { validateAllFields, validateField } from '../../helpers/validate';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { login } from '../../store/modules/auth/authSlice';
 
-type FormSignIn = {
+export type FormSignIn = {
   login: string;
   password: string;
 };
 
-type FormSignInErrors = {
-  login?: string;
-  password?: string;
-};
+type FormSignInErrors = Partial<FormSignIn>;
 
-export function SignIn(): JSX.Element {
+export function SignIn() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { isLoggedIn, status, error } = useAppSelector((state) => state.auth);
+
   const [formValues, setFormValues] = useState<FormSignIn>({
     login: '',
     password: '',
   });
 
   const [formErrors, setFormErrors] = useState<FormSignInErrors>({});
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/profile');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -50,9 +61,8 @@ export function SignIn(): JSX.Element {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
     const validationErrors = validateAllFields(formValues);
 
@@ -61,10 +71,7 @@ export function SignIn(): JSX.Element {
     const noErrors = Object.values(validationErrors).every((error) => !error);
 
     if (noErrors) {
-      console.info({
-        login: data.get('login'),
-        password: data.get('password'),
-      });
+      await dispatch(login(formValues));
     }
   };
 
@@ -134,13 +141,22 @@ export function SignIn(): JSX.Element {
           >
             Sign In
           </Button>
+          {status === 'failed' && (
+            <Alert
+              sx={{ mt: 1, mb: 2 }}
+              severity='error'
+              variant='outlined'
+            >
+              {error}
+            </Alert>
+          )}
           <Grid container>
             <Grid
               item
               xs
             >
               <Link
-                href='#'
+                href='/profile'
                 variant='body2'
               >
                 Forgot password?

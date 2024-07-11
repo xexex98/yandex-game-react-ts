@@ -9,7 +9,10 @@ import Typography from '@mui/material/Typography';
 import React, { useCallback, useRef, useState } from 'react';
 
 import { PasswordModal } from '../../components/PasswordModal';
+import { API_URL, APPLICATION_JSON } from '../../consts';
 import { validateAllFields, validateField } from '../../helpers/validate';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { AuthUserResponse, logout } from '../../store/modules/auth/authSlice';
 
 type TUserData = {
   login: string;
@@ -21,22 +24,19 @@ type TUserData = {
 
 type TUserErrors = Partial<TUserData>;
 
-const UData: TUserData = {
-  login: 'johny',
-  first_name: 'John',
-  second_name: 'Doe',
-  email: 'example@mail.com',
-  phone: '+79993332211',
-};
-
 const AVATAR_URL =
   'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x';
 
+type FormFields = Partial<AuthUserResponse>;
+
 export const ProfilePage = () => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
   const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [formValues, setFormValues] = useState(UData);
+  const [formValues, setFormValues] = useState<FormFields>(user || {});
   const [formErrors, setFormErrors] = useState<TUserErrors>({});
   const [avatarUrl, setAvatarUrl] = useState(AVATAR_URL);
 
@@ -71,7 +71,6 @@ export const ProfilePage = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
     const validationErrors = validateAllFields(formValues);
 
@@ -80,14 +79,17 @@ export const ProfilePage = () => {
     const noErrors = Object.values(validationErrors).every((error) => !error);
 
     if (noErrors) {
-      console.info({
-        login: data.get('login'),
-        first_name: data.get('first_name'),
-        second_name: data.get('second_name'),
-        email: data.get('email'),
-        phone: data.get('phone'),
+      fetch(`${API_URL}/user/profile`, {
+        method: 'PUT',
+        headers: APPLICATION_JSON,
+        body: JSON.stringify(formValues),
+        credentials: 'include',
       });
     }
+  };
+
+  const handleLogout = async () => {
+    await dispatch(logout());
   };
 
   return (
@@ -252,7 +254,16 @@ export const ProfilePage = () => {
                 type='submit'
                 fullWidth
                 variant='contained'
-                sx={{ mt: 3, mb: 2 }}
+                color='error'
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 2, mb: 2 }}
               >
                 Save
               </Button>

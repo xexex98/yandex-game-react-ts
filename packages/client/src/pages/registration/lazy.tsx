@@ -1,4 +1,5 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,11 +9,14 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { validateAllFields, validateField } from '../../helpers/validate';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { register } from '../../store/modules/auth/authSlice';
 
-type FormSignUp = {
+export type FormSignUp = {
   first_name: string;
   second_name: string;
   login: string;
@@ -21,16 +25,13 @@ type FormSignUp = {
   phone: string;
 };
 
-type FormSignUpErrors = {
-  first_name?: string;
-  second_name?: string;
-  login?: string;
-  email?: string;
-  password?: string;
-  phone?: string;
-};
+type FormSignUpErrors = Partial<FormSignUp>;
 
-export function SignUp(): JSX.Element {
+export function SignUp() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { status, error } = useAppSelector((state) => state.auth);
+
   const [formValues, setFormValues] = useState<FormSignUp>({
     first_name: '',
     second_name: '',
@@ -41,6 +42,12 @@ export function SignUp(): JSX.Element {
   });
 
   const [formErrors, setFormErrors] = useState<FormSignUpErrors>({});
+
+  useEffect(() => {
+    if (status === 'success') {
+      navigate('/profile');
+    }
+  }, [status, navigate]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -62,9 +69,8 @@ export function SignUp(): JSX.Element {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
     const validationErrors = validateAllFields(formValues);
 
@@ -73,14 +79,7 @@ export function SignUp(): JSX.Element {
     const noErrors = Object.values(validationErrors).every((error) => !error);
 
     if (noErrors) {
-      console.info({
-        first_name: data.get('first_name'),
-        second_name: data.get('second_name'),
-        login: data.get('login'),
-        email: data.get('email'),
-        password: data.get('password'),
-        phone: data.get('phone'),
-      });
+      await dispatch(register(formValues));
     }
   };
 
@@ -237,6 +236,15 @@ export function SignUp(): JSX.Element {
           >
             Sign Up
           </Button>
+          {status === 'failed' && (
+            <Alert
+              sx={{ mt: 1, mb: 2 }}
+              severity='error'
+              variant='outlined'
+            >
+              {error}
+            </Alert>
+          )}
           <Grid
             container
             justifyContent='flex-end'

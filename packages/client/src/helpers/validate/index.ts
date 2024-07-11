@@ -45,6 +45,10 @@ export function validateField(
   name: keyof typeof FEEDBACK,
   value: string
 ): string {
+  if (!FEEDBACK[name]) {
+    return '';
+  }
+
   if (!value) {
     return FEEDBACK[name].empty;
   } else if (!FEEDBACK[name].regex.test(value)) {
@@ -54,13 +58,13 @@ export function validateField(
   return '';
 }
 
-type Fields = Record<string, string>;
+type Fields = Record<string, string> | object;
 
 export function validateAllFields(fields: Fields): Record<string, string> {
   const errors: Record<string, string> = {};
 
   for (const [name, value] of Object.entries(fields)) {
-    errors[name] = validateField(name as keyof typeof FEEDBACK, value);
+    errors[name] = validateField(name, value);
   }
   return errors;
 }

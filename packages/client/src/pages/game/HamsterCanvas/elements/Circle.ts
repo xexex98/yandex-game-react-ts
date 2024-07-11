@@ -1,5 +1,5 @@
 import { Animate } from '../core/Animate';
-import { Base2D, optionsElement } from '../core/Base2D';
+import { Base2D, OptionsElement } from '../core/Base2D';
 
 const color = ['#6600CC', '#FFCC00', '#9EA9F0', '#CC0000'];
 
@@ -14,7 +14,7 @@ export class Circle extends Base2D {
     dx: number,
     dy: number,
     radius: number,
-    options: optionsElement
+    options: OptionsElement
   ) {
     super(canvas, { ...options });
     this.dx = dx;

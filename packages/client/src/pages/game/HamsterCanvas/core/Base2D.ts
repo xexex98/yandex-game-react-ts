@@ -1,6 +1,6 @@
 import Render from './Render';
 
-export type optionsElement = {
+export type OptionsElement = {
   x: number;
   y: number;
   width?: number;
@@ -34,7 +34,7 @@ export abstract class Base2D {
     }
   }
 
-  constructor(canvas: HTMLCanvasElement, options: optionsElement) {
+  constructor(canvas: HTMLCanvasElement, options: OptionsElement) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
     this.x = options.x;

@@ -3,11 +3,14 @@ import { Base2D } from '../core/Base2D';
 const color = '#535C61';
 const colorText = '#FFF';
 
+const width = 50;
+const height = 50;
+
 export class Char extends Base2D {
   char: string;
 
   constructor(canvas: HTMLCanvasElement, char: string) {
-    super(canvas, { x: 0, y: 0, width: 50, height: 50 });
+    super(canvas, { x: 0, y: 0, width: width, height: height });
     this.char = char;
   }
 

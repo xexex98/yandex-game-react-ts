@@ -40,7 +40,7 @@ export const HamsterCanvas: FC<Props> = ({ endGame, setScore }) => {
         }
       };
     }
-  });
+  }, []);
 
   return (
     <div className='wrapper'>

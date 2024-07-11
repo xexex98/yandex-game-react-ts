@@ -1,7 +1,11 @@
 import BreakHeartImg from '../assets/break-heart.svg';
 import HeartImg from '../assets/heart.svg';
 import { Animate } from '../core/Animate';
-import { Base2D, optionsElement } from '../core/Base2D';
+import { Base2D, OptionsElement } from '../core/Base2D';
+
+const width = 50;
+const height = 50;
+const offsetSizeCoeff = 0.2;
 
 export class Heart extends Base2D {
   image: HTMLImageElement;
@@ -20,22 +24,22 @@ export class Heart extends Base2D {
     this.image.src = value ? BreakHeartImg : HeartImg;
   }
 
-  constructor(canvas: HTMLCanvasElement, options: optionsElement) {
-    super(canvas, { ...options, width: 50, height: 50 });
+  constructor(canvas: HTMLCanvasElement, options: OptionsElement) {
+    super(canvas, { ...options, width: width, height: height });
     this.image = new Image();
     this.image.src = HeartImg;
 
     const widthLocal = this.width;
     const heightLocal = this.height;
 
-    const dx = (widthLocal + widthLocal * 0.2 - widthLocal) / 4;
-    const dy = (heightLocal + heightLocal * 0.2 - heightLocal) / 4;
+    const dx = (widthLocal + widthLocal * offsetSizeCoeff - widthLocal) / 4;
+    const dy = (heightLocal + heightLocal * offsetSizeCoeff - heightLocal) / 4;
 
     this.heatBit = Animate(() => {
       this.width += dx;
       this.height += dy;
 
-      if (this.width > widthLocal + widthLocal * 0.2) {
+      if (this.width > widthLocal + widthLocal * offsetSizeCoeff) {
         return true;
       }
     })(() => {

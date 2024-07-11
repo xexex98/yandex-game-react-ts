@@ -1,11 +1,18 @@
 import { Base2D } from '../core/Base2D';
 
+const options = {
+  x: 50,
+  y: 125,
+  width: 50,
+  height: 100,
+};
+
 export class InfoGame extends Base2D {
   score: number = 0;
   coefficient: number = 1;
   level: number = 1;
   constructor(canvas: HTMLCanvasElement) {
-    super(canvas, { x: 50, y: 125, width: 50, height: 100 });
+    super(canvas, options);
   }
 
   draw(): void {

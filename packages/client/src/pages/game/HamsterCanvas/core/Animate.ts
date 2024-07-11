@@ -1,9 +1,9 @@
 type CallBackAnimate = () => true | undefined;
 type Action = () => Promise<true | undefined>;
-type repeat = number | 'infinity';
+type Repeat = number | 'infinity';
 interface Step {
   (value: CallBackAnimate): Step;
-  (value?: repeat): Action;
+  (value?: Repeat): Action;
 }
 
 export function Animate(callBack: CallBackAnimate): Step {
@@ -12,7 +12,7 @@ export function Animate(callBack: CallBackAnimate): Step {
   animateStep.push(callBack);
 
   let currentStep = 0;
-  let countRepeat: repeat = 1;
+  let countRepeat: Repeat = 1;
   let repeat = 1;
 
   const action: Action = () => {

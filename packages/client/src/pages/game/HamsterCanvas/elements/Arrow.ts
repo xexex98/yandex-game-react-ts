@@ -1,11 +1,15 @@
 import ArrowImg from '../assets/arrow.svg';
 import { Animate } from '../core/Animate';
-import { Base2D, optionsElement } from '../core/Base2D';
+import { Base2D, OptionsElement } from '../core/Base2D';
+
+const width = 50;
+const height = 50;
 
 export class Arrow extends Base2D {
   private image: HTMLImageElement;
-  constructor(canvas: HTMLCanvasElement, options: optionsElement) {
-    super(canvas, { ...options, width: 50, height: 50 });
+
+  constructor(canvas: HTMLCanvasElement, options: OptionsElement) {
+    super(canvas, { ...options, width: width, height: height });
 
     this.image = new Image();
     this.image.src = ArrowImg;

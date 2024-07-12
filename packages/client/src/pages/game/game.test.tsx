@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
-import { GamePage } from '..';
+import { GamePage } from '.';
 
 describe('Game test', () => {
   const mockStore = configureStore();

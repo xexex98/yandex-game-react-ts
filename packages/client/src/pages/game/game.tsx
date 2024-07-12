@@ -11,8 +11,7 @@ import { StartScreen } from './StartScreen';
 import { useGameData } from './useGameData';
 
 const Game = () => {
-  const { onClickFullScreen, refToggler, onClickCircle, countClick } =
-    useGameData();
+  const { onClickFullScreen, refToggler, setScore, score } = useGameData();
 
   const gameStatus = useAppSelector((state) => state.gameState.status);
   const dispatch = useAppDispatch();
@@ -25,7 +24,6 @@ const Game = () => {
 
   return (
     <>
-      <div>Game: count click-{countClick}</div>
       <Button
         ref={refToggler}
         variant='contained'
@@ -44,11 +42,14 @@ const Game = () => {
         <></>
       )}
       {gameStatus === 'started' ? (
-        <HamsterCanvas onClickCircle={onClickCircle} />
+        <HamsterCanvas
+          endGame={endGame}
+          setScore={setScore}
+        />
       ) : gameStatus === 'new' ? (
         <StartScreen changeStart={changeStart} />
       ) : (
-        <EndScreen value={7} />
+        <EndScreen value={score} />
       )}
     </>
   );

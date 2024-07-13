@@ -73,6 +73,8 @@
     "simple-import-sort/exports": "error"
   },
   "ignorePatterns": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "mocks/*",
+    "setupTests.js"
   ]
 }

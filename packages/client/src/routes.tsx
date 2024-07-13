@@ -9,6 +9,7 @@ import { GamePage } from './pages/game';
 import { LeaderBoardPage } from './pages/leader_board';
 import { SignIn } from './pages/login';
 import { MainPage } from './pages/main';
+import { NotFound } from './pages/notFound';
 import { ProfilePage } from './pages/profile';
 import { LazySignUp } from './pages/registration';
 import { TopicPage } from './pages/topic';
@@ -61,6 +62,11 @@ const routes: RouteObject[] = [
   {
     path: 'leaders',
     element: <LeaderBoardPage />,
+    ErrorBoundary: MyErrorBoundary,
+  },
+  {
+    path: '/404',
+    element: <NotFound />,
     ErrorBoundary: MyErrorBoundary,
   },
 ];

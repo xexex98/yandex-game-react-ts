@@ -26,13 +26,13 @@ describe('Game test', () => {
     expect(screen.getByText('Начать игру')).toBeDefined();
   });
 
+  const canvas = document.createElement('canvas');
+
+  canvas.id = 'canvas';
+  canvas.width = 400;
+  canvas.height = 400;
+
   it('Проверяем установку канваса', () => {
-    const canvas = document.createElement('canvas');
-
-    canvas.id = 'canvas';
-    canvas.width = 400;
-    canvas.height = 400;
-
     const game = new Game(
       canvas,
       () => {},
@@ -42,6 +42,52 @@ describe('Game test', () => {
     game.startGame();
 
     expect(game.canvas).not.toBeNull();
+  });
+
+  it('Проверяем неверное нажатие клавиши', (done) => {
+    const game = new Game(
+      canvas,
+      () => {},
+      () => {}
+    );
+
+    game.startGame();
+
+    const pressEvent = new KeyboardEvent('keydown', { code: 'KeyZ' }); // имитируем нажатие клавиши, которой нет в списке разрешенных
+
+    game.keyUp(pressEvent);
+
+    setTimeout(() => {
+      const isBreak = game.heart.at(-1)?.break; // статус последней жизни (при неверном нажатии - true)
+
+      expect(isBreak).toBeTruthy();
+      game.stopGame();
+      done();
+    }, 1000);
+  });
+
+  it('Проверяем правильное нажатие клавиши', (done) => {
+    const game = new Game(
+      canvas,
+      () => {},
+      () => {}
+    );
+
+    game.startGame();
+
+    const pressEvent = new KeyboardEvent('keydown', {
+      code: `Key${game.chars[0].char}`,
+    });
+
+    game.keyUp(pressEvent);
+
+    setTimeout(() => {
+      const isBreak = game.heart.at(-1)?.break; // статус последней жизни (при верном нажатии - false)
+
+      expect(isBreak).toBeFalsy();
+      game.stopGame();
+      done();
+    }, 1000);
   });
 
   class testCircle extends Base2D {

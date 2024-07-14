@@ -28,13 +28,13 @@ export class Game {
   private infoGame: InfoGame;
   private arrow: Arrow;
 
-  private heart: Array<Heart> = [];
-  private chars: Array<Char> = [];
+  heart: Array<Heart> = [];
+  chars: Array<Char> = [];
 
   private level: number = 0;
   private score: number = 0;
 
-  private keyUp: (event: KeyboardEvent) => void;
+  keyUp: (event: KeyboardEvent) => void;
   private resize: () => void;
   private callBackEndGame?: CallBackEndGame;
   private callBackStopGame?: CallBackStopGame;

@@ -7,7 +7,7 @@ import { ErrorPage } from './pages/error';
 import { ForumPage } from './pages/forum';
 import { GamePage } from './pages/game';
 import { LeaderBoardPage } from './pages/leader_board';
-import { SignIn } from './pages/login';
+import { LazySignIn } from './pages/login';
 import { MainPage } from './pages/main';
 import { ProfilePage } from './pages/profile';
 import { LazySignUp } from './pages/registration';
@@ -24,7 +24,7 @@ const routes: RouteObject[] = [
   },
   {
     path: 'login',
-    element: <SignIn />,
+    element: <LazySignIn />,
     ErrorBoundary: MyErrorBoundary,
   },
   {

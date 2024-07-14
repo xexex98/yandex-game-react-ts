@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { API_URL, APPLICATION_JSON } from '../../../consts';
-import { FormSignIn } from '../../../pages/login';
+import { FormSignIn } from '../../../pages/login/lazy';
 import { FormSignUp } from '../../../pages/registration/lazy';
 
 type AuthState = {

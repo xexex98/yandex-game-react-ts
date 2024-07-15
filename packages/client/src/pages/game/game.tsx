@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 
+import { startWebWorker } from '../../../services/webWorker'
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   startGame,
@@ -17,6 +18,7 @@ const Game = () => {
   const dispatch = useAppDispatch();
   const changeStart = () => {
     dispatch(startGame());
+    startWebWorker()
   };
   const endGame = () => {
     dispatch(stopGame());

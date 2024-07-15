@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { PasswordModal } from '../../components/PasswordModal';
 import { API_URL, APPLICATION_JSON } from '../../consts';
@@ -32,7 +33,7 @@ type FormFields = Partial<AuthUserResponse>;
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -85,6 +86,7 @@ export const ProfilePage = () => {
         body: JSON.stringify(formValues),
         credentials: 'include',
       });
+      navigate('/');
     }
   };
 

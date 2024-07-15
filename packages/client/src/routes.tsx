@@ -40,28 +40,28 @@ const routes: RouteObject[] = [
         element: <ProfilePage />,
         ErrorBoundary: MyErrorBoundary,
       },
-    ],
-  },
-  {
-    path: 'forum',
-    element: <ForumPage />,
-    ErrorBoundary: MyErrorBoundary,
-    children: [
       {
-        path: 'topic/:id',
-        element: <TopicPage />,
+        path: 'game',
+        element: <GamePage />,
+        ErrorBoundary: MyErrorBoundary,
+      },
+      {
+        path: 'leaders',
+        element: <LeaderBoardPage />,
+        ErrorBoundary: MyErrorBoundary,
+      },
+      {
+        path: 'forum',
+        element: <ForumPage />,
+        ErrorBoundary: MyErrorBoundary,
+        children: [
+          {
+            path: 'topic/:id',
+            element: <TopicPage />,
+          },
+        ],
       },
     ],
-  },
-  {
-    path: 'game',
-    element: <GamePage />,
-    ErrorBoundary: MyErrorBoundary,
-  },
-  {
-    path: 'leaders',
-    element: <LeaderBoardPage />,
-    ErrorBoundary: MyErrorBoundary,
   },
 ];
 

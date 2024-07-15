@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { validateAllFields, validateField } from '../../helpers/validate';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { login } from '../../store/modules/auth/authSlice';
+import { getCurrentUser, login } from '../../store/modules/auth/authSlice';
 
 export type FormSignIn = {
   login: string;
@@ -36,10 +36,13 @@ export function SignIn() {
   const [formErrors, setFormErrors] = useState<FormSignInErrors>({});
 
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/profile');
+    if (status === 'idle') {
+      dispatch(getCurrentUser());
     }
-  }, [isLoggedIn, navigate]);
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn, navigate, status, dispatch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -151,25 +154,12 @@ export function SignIn() {
             </Alert>
           )}
           <Grid container>
-            <Grid
-              item
-              xs
+            <Link
+              href='registration'
+              variant='body2'
             >
-              <Link
-                href='/profile'
-                variant='body2'
-              >
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link
-                href='registration'
-                variant='body2'
-              >
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
+              {"Don't have an account? Sign Up"}
+            </Link>
           </Grid>
         </Box>
       </Box>

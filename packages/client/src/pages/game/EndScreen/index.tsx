@@ -56,6 +56,7 @@ export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
         </Typography>
         <Link to='/'>
           <Button
+            fullWidth
             onClick={onClick}
             variant='contained'
           >

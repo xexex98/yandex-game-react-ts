@@ -1,13 +1,26 @@
 import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
+import { Loader } from '../../components/Loader';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getCurrentUser } from '../../store/modules/auth/authSlice';
 import { AuthButtons } from './AuthButtons';
 import { GameButtons } from './GameButtons';
 
 export const MainPage = () => {
-  const [authorised, setAuthorised] = useState(false);
+  const { isLoggedIn, status } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
-  setAuthorised;
+  useEffect(() => {
+    if (!isLoggedIn) {
+      dispatch(getCurrentUser());
+    }
+  }, [isLoggedIn, dispatch]);
+
+  if (status === 'loading' || status === 'idle') {
+    return <Loader />;
+  }
+
   return (
     <Box
       height={'100vh'}
@@ -23,7 +36,7 @@ export const MainPage = () => {
       >
         {`Ludocoder's Clicker`}
       </Typography>
-      {authorised ? <GameButtons /> : <AuthButtons />}
+      {isLoggedIn ? <GameButtons /> : <AuthButtons />}
     </Box>
   );
 };

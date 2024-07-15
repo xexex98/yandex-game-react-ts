@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -24,23 +24,34 @@ const Game = () => {
 
   return (
     <>
-      <Button
-        ref={refToggler}
-        variant='contained'
-        onClick={onClickFullScreen}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          padding: '8px',
+        }}
       >
-        Перейти в fullscreen режим
-      </Button>
-      {gameStatus === 'started' ? (
         <Button
+          ref={refToggler}
           variant='contained'
-          onClick={endGame}
+          onClick={onClickFullScreen}
         >
-          Закончить игру
+          Перейти в fullscreen режим
         </Button>
-      ) : (
-        <></>
-      )}
+        {gameStatus === 'started' ? (
+          <Button
+            variant='contained'
+            onClick={endGame}
+          >
+            Закончить игру
+          </Button>
+        ) : null}
+      </Box>
       {gameStatus === 'started' ? (
         <HamsterCanvas
           endGame={endGame}

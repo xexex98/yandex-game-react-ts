@@ -9,7 +9,6 @@ import { GamePage } from './pages/game';
 import { LeaderBoardPage } from './pages/leader_board';
 import { SignIn } from './pages/login';
 import { MainPage } from './pages/main';
-import { NotFound } from './pages/notFound';
 import { ProfilePage } from './pages/profile';
 import { LazySignUp } from './pages/registration';
 import { TopicPage } from './pages/topic';
@@ -41,33 +40,28 @@ const routes: RouteObject[] = [
         element: <ProfilePage />,
         ErrorBoundary: MyErrorBoundary,
       },
-    ],
-  },
-  {
-    path: 'forum',
-    element: <ForumPage />,
-    ErrorBoundary: MyErrorBoundary,
-    children: [
       {
-        path: 'topic/:id',
-        element: <TopicPage />,
+        path: 'game',
+        element: <GamePage />,
+        ErrorBoundary: MyErrorBoundary,
+      },
+      {
+        path: 'leaders',
+        element: <LeaderBoardPage />,
+        ErrorBoundary: MyErrorBoundary,
+      },
+      {
+        path: 'forum',
+        element: <ForumPage />,
+        ErrorBoundary: MyErrorBoundary,
+        children: [
+          {
+            path: 'topic/:id',
+            element: <TopicPage />,
+          },
+        ],
       },
     ],
-  },
-  {
-    path: 'game',
-    element: <GamePage />,
-    ErrorBoundary: MyErrorBoundary,
-  },
-  {
-    path: 'leaders',
-    element: <LeaderBoardPage />,
-    ErrorBoundary: MyErrorBoundary,
-  },
-  {
-    path: '/404',
-    element: <NotFound />,
-    ErrorBoundary: MyErrorBoundary,
   },
 ];
 

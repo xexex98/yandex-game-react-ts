@@ -87,6 +87,7 @@ export function SignUp() {
     <Container
       component='main'
       maxWidth='xs'
+      sx={{ paddingTop: '10px' }}
     >
       <CssBaseline />
       <Box

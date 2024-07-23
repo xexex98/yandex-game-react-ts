@@ -1,15 +1,13 @@
 import { Box, Link, Typography } from '@mui/material';
-import { purple } from '@mui/material/colors';
-
-const primary = purple[500];
 
 export const NotFound = () => {
   const linkStyle = {
-    color: '#000',
+    color: '#fff',
     fontWeight: 500,
     padding: '10px 20px',
+    margin: '30px 0 0',
     borderRadius: '6px',
-    backgroundColor: '#fff',
+    backgroundColor: '#309bac',
   };
   const boxStyle = {
     display: 'flex',
@@ -17,21 +15,19 @@ export const NotFound = () => {
     alignItems: 'center',
     flexDirection: 'column',
     minHeight: '100vh',
-    backgroundColor: primary,
-    backgroundImage: 'linear-gradient(0deg, #000, #341039)',
   };
 
   return (
     <Box sx={boxStyle}>
       <Typography
         variant='h1'
-        style={{ color: 'white' }}
+        style={{ color: '#309bac' }}
       >
         404
       </Typography>
       <Typography
         variant='h6'
-        style={{ color: 'white' }}
+        style={{ color: '#309bac' }}
       >
         Извините, страница не найдена.
       </Typography>

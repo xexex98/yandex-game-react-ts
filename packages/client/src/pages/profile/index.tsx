@@ -98,6 +98,7 @@ export const ProfilePage = () => {
     <Container
       component='main'
       maxWidth='xs'
+      sx={{ paddingTop: '10px' }}
     >
       <CssBaseline />
       <Box

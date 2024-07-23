@@ -1,6 +1,7 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useEffect } from 'react';
 
+import Logo from '../../assets/logo.svg';
 import { Loader } from '../../components/Loader';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getCurrentUser } from '../../store/modules/auth/authSlice';
@@ -29,13 +30,10 @@ export const MainPage = () => {
       justifyContent={'center'}
       flexDirection={'column'}
     >
-      <Typography
-        variant='h3'
-        component='h1'
-        marginBottom={'80px'}
-      >
-        {`Ludocoder's Clicker`}
-      </Typography>
+      <img
+        src={Logo}
+        style={{ height: 100, marginBottom: 40 }}
+      />
       {isLoggedIn ? <GameButtons /> : <AuthButtons />}
     </Box>
   );

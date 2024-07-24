@@ -74,6 +74,8 @@
   "ignorePatterns": [
     "src/**/*.test.ts",
     "mocks/*",
-    "setupTests.js"
+    "setupTests.js",
+    "server/*.js"
+
   ]
 }

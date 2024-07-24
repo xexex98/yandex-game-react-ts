@@ -24,7 +24,6 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": true,
     "tsconfigRootDir": "."
   },
   "plugins": [

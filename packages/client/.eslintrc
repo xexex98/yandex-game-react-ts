@@ -24,7 +24,6 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": true,
     "tsconfigRootDir": "."
   },
   "plugins": [
@@ -75,6 +74,8 @@
   "ignorePatterns": [
     "src/**/*.test.ts",
     "mocks/*",
-    "setupTests.js"
+    "setupTests.js",
+    "server/*.js"
+
   ]
 }

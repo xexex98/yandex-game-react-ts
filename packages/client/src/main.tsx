@@ -36,7 +36,8 @@ const router = createBrowserRouter(routes);
 
 startServiceWorker();
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>

@@ -4,6 +4,9 @@ import { FC } from 'react';
 
 import { CardTop3UserProps } from '../types/CardProps';
 
+const AVATAR_URL =
+  'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x';
+
 export const CardTop3User: FC<CardTop3UserProps> = ({ position, card }) => {
   const procent = 1 - 0.25 * position;
 
@@ -33,23 +36,30 @@ export const CardTop3User: FC<CardTop3UserProps> = ({ position, card }) => {
         )}
 
         <Avatar
-          src={card.avatar}
+          src={card.avatar ?? AVATAR_URL}
           sx={{
             width: 140 * procent,
             height: 140 * procent,
             marginBottom: 2,
+            backgroundColor: '#e3e3e3',
           }}
         />
       </Box>
       <Typography
         component='h3'
         variant='h5'
+        sx={{
+          color: '#F9D838',
+        }}
       >
         {card.login}
       </Typography>
       <Typography
         component='h3'
         variant={position === 0 ? 'h5' : 'subtitle1'}
+        sx={{
+          color: '#F9D838',
+        }}
       >
         {card.rating}
       </Typography>

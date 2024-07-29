@@ -36,7 +36,7 @@ export const GameButtons: FC = () => {
             variant='contained'
             className={style.button}
           >
-            Таблица ледеров
+            Таблица лидеров
           </Button>
         </Link>
         <Link

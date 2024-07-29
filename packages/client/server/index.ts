@@ -36,9 +36,14 @@ async function createServer() {
         path.join(clientPath, 'src/entry-server.tsx')
       );
 
-      const appHtml = await render();
+      const { html: appHtml, initialState } = await render();
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml);
+      const html = template
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(
+          `<!--ssr-initial-state-->`,
+          `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`
+        );
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e) {

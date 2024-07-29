@@ -5,11 +5,12 @@ import { BackButton } from '../../components/BackButton';
 import { Loader } from '../../components/Loader';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getAllLeaderboard } from '../../store/modules/leaderboard/leaderboardSlice';
+import { selectLeaderboard } from '../../store/modules/leaderboard/selectors';
 import { CardTop3User } from './components/CardTop3User';
 import { CardTopUser } from './components/CardTopUser';
 
 export const LeaderBoardPage = () => {
-  const { leaderboard, status } = useAppSelector((state) => state.leaderboard);
+  const { leaderboard, status } = useAppSelector(selectLeaderboard);
 
   const dispatch = useAppDispatch();
 

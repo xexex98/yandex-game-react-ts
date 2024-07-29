@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { setRatingTeam } from '../../../api/leaderboard';
 import { useAppDispatch, useAppSelector } from '../../../store';
+import { selectUser } from '../../../store/modules/auth/selectors';
 import { newGame } from '../../../store/modules/gameState/gameStateSlice';
 
 // import './style.css';
@@ -15,20 +16,20 @@ type EndScreenProps = {
 
 export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    const setRaiting = async () => {
+    const setRating = async () => {
       try {
-        if (user?.login && typeof value === 'number' && value >= 0) {
-          await setRatingTeam({ login: user?.login, rating: value });
+        if (user?.login && value >= 0) {
+          await setRatingTeam({ login: user.login, rating: value });
         }
       } catch (e) {
         console.error(e);
       }
     };
 
-    setRaiting();
+    setRating();
   }, [user?.login, value]);
 
   const startNewGame = useCallback(() => {

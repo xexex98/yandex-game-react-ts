@@ -36,7 +36,7 @@ async function createServer() {
         path.join(clientPath, 'src/entry-server.tsx')
       );
 
-      const { html: appHtml, initialState } = await render();
+      const { html: appHtml, initialState } = await render(req);
 
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)

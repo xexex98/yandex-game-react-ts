@@ -25,7 +25,7 @@ async function createServer() {
             let template = await promises_1.default.readFile(node_path_1.default.resolve(clientPath, 'index.html'), 'utf-8');
             template = await vite.transformIndexHtml(url, template);
             const { render } = await vite.ssrLoadModule(node_path_1.default.join(clientPath, 'src/entry-server.tsx'));
-            const { html: appHtml, initialState } = await render();
+            const { html: appHtml, initialState } = await render(req);
             const html = template
                 .replace(`<!--ssr-outlet-->`, appHtml)
                 .replace(`<!--ssr-initial-state-->`, `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`);

@@ -1,9 +1,9 @@
-import { ComponentType } from 'react';
+//import { ComponentType } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import { ErrorBoundary } from './components/ErrorBoundary';
+//import { ErrorBoundary } from './components/ErrorBoundary';
 import { PrivateRoute } from './components/PrivateRoute';
-//import { ErrorPage } from './pages/error';
+import { ErrorPage } from './pages/error';
 import { ForumPage } from './pages/forum';
 import { GamePage } from './pages/game';
 import { LeaderBoardPage } from './pages/leader_board';
@@ -14,55 +14,64 @@ import { ProfilePage } from './pages/profile';
 import { LazySignUp } from './pages/registration';
 import { TopicPage } from './pages/topic';
 
-const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType;
+//const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType;
 
 const routes: RouteObject[] = [
   {
     path: '*',
+    //element: <NotFound />,
     Component: NotFound,
   },
   {
     path: '/',
+    //element: <MainPage />,
     Component: MainPage,
-    //errorElement: <ErrorPage />,
-    ErrorBoundary: MyErrorBoundary,
+    errorElement: <ErrorPage />,
+    //ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'login',
+    //element: <SignIn />,
     Component: SignIn,
-    //errorElement: <ErrorPage />,
-    ErrorBoundary: MyErrorBoundary,
+    //ErrorBoundary: MyErrorBoundary,
   },
   {
     path: 'registration',
+    //element: <LazySignUp />,
     Component: LazySignUp,
-    ErrorBoundary: MyErrorBoundary,
+    //ErrorBoundary: MyErrorBoundary,
   },
   {
+    //element: <PrivateRoute />,
     Component: PrivateRoute,
     children: [
       {
         path: 'profile',
+        //element: <ProfilePage />,
         Component: ProfilePage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
       },
       {
         path: 'game',
+        //element: <GamePage />,
         Component: GamePage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
       },
       {
         path: 'leaders',
+        //element: <LeaderBoardPage />,
         Component: LeaderBoardPage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
       },
       {
         path: 'forum',
+        //element: <ForumPage />,
         Component: ForumPage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
         children: [
           {
             path: 'topic/:id',
+            //element: <TopicPage />,
             Component: TopicPage,
           },
         ],

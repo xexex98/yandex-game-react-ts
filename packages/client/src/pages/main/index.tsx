@@ -18,23 +18,25 @@ export const MainPage = () => {
     }
   }, [isLoggedIn, dispatch]);
 
-  if (status === 'loading' || status === 'idle') {
-    return <Loader />;
-  }
-
   return (
-    <Box
-      height={'100vh'}
-      display={'flex'}
-      alignItems={'center'}
-      justifyContent={'center'}
-      flexDirection={'column'}
-    >
-      <img
-        src={Logo}
-        style={{ height: 100, marginBottom: 40 }}
-      />
-      {isLoggedIn ? <GameButtons /> : <AuthButtons />}
-    </Box>
+    <div>
+      {status === 'loading' || status === 'idle' ? (
+        <Loader />
+      ) : (
+        <Box
+          height={'100vh'}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'center'}
+          flexDirection={'column'}
+        >
+          <img
+            src={Logo}
+            style={{ height: 100, marginBottom: 40 }}
+          />
+          {isLoggedIn ? <GameButtons /> : <AuthButtons />}
+        </Box>
+      )}
+    </div>
   );
 };

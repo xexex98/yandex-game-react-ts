@@ -1,14 +1,17 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Alert } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  // Avatar,
+  CssBaseline,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +26,7 @@ export type FormSignIn = {
 
 type FormSignInErrors = Partial<FormSignIn>;
 
-export function SignIn() {
+export const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { isLoggedIn, status, error } = useAppSelector((state) => state.auth);
@@ -93,9 +96,6 @@ export function SignIn() {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography
           component='h1'
           variant='h5'
@@ -166,4 +166,4 @@ export function SignIn() {
       </Box>
     </Container>
   );
-}
+};

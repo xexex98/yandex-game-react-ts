@@ -17,9 +17,7 @@ import { getCurrentUser } from './store/modules/auth/authSlice';
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes);
-
   const fetchRequest = createFetchRequest(req);
-
   const context = await query(fetchRequest);
 
   if (context instanceof Response) {

@@ -136,3 +136,5 @@ export const LeaderBoardPage = () => {
     </Box>
   );
 };
+
+export const initLeaderBoardPage = () => Promise.resolve();

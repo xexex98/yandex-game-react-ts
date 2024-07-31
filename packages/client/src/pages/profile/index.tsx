@@ -293,3 +293,5 @@ export const ProfilePage = () => {
     </Container>
   );
 };
+
+export const initProfilePage = () => Promise.resolve();

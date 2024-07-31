@@ -266,3 +266,5 @@ export function SignUp() {
     </Container>
   );
 }
+
+export const initRegistrationPage = () => Promise.resolve();

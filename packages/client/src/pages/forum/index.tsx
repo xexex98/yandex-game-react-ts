@@ -39,3 +39,5 @@ export const ForumPage = () => {
     </Container>
   );
 };
+
+export const initForumPage = () => Promise.resolve();

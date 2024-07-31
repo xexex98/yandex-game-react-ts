@@ -28,3 +28,5 @@ export const PrivateRoute = () => {
     />
   );
 };
+
+export const initPrivateRoutePage = () => Promise.resolve();

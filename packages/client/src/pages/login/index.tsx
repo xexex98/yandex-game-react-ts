@@ -167,3 +167,5 @@ export const SignIn = () => {
     </Container>
   );
 };
+
+export const initLoginPage = () => Promise.resolve();

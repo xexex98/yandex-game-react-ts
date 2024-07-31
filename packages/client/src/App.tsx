@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { Loader } from './components/Loader';
+
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
@@ -12,7 +14,7 @@ function App() {
 
     fetchServerData();
   }, []);
-  return <div className='App'> Вот тут будет жить ваше приложение :)</div>;
+  return <Loader />;
 }
 
 export default App;

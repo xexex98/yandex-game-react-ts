@@ -1,22 +1,27 @@
 import { Box } from '@mui/material';
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import Logo from '../../assets/logo.svg';
 import { Loader } from '../../components/Loader';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getCurrentUser } from '../../store/modules/auth/authSlice';
+import { getCurrentUser, oAuthLogin } from '../../store/modules/auth/authSlice';
 import { AuthButtons } from './AuthButtons';
 import { GameButtons } from './GameButtons';
 
 export const MainPage = () => {
   const { isLoggedIn, status } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const code = searchParams.get('code');
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (code && !isLoggedIn) {
+      dispatch(oAuthLogin(code));
+    } else if (!isLoggedIn) {
       dispatch(getCurrentUser());
     }
-  }, [isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch, code]);
 
   if (status === 'loading' || status === 'idle') {
     return <Loader />;

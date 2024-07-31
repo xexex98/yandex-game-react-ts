@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { API_URL, APPLICATION_JSON } from '../../../consts';
+import { API_URL, APPLICATION_JSON, REDIRECT_URI } from '../../../consts';
 import { FormSignIn } from '../../../pages/login';
 import { FormSignUp } from '../../../pages/registration/lazy';
 
@@ -112,6 +112,56 @@ export const logout = createAsyncThunk(
     }
   }
 );
+export const oAuthLogin = createAsyncThunk(
+  'auth/oAuthLogin',
+  async (code: string, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_URL}/oauth/yandex`, {
+        method: 'POST',
+        headers: APPLICATION_JSON,
+        body: JSON.stringify({
+          code: code,
+          redirect_uri: REDIRECT_URI,
+        }),
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
+
+export const oAuthServiceId = createAsyncThunk(
+  'auth/oAuthServiceId',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/oauth/yandex/service-id?redirect_uri=${REDIRECT_URI}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+
+      window.open(
+        `https://oauth.yandex.ru/authorize?response_type=code&client_id=${data.service_id}&redirect_uri=${REDIRECT_URI}`,
+        '_self'
+      );
+      return;
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
 
 const initialState: AuthState = {
   status: 'idle',
@@ -187,6 +237,20 @@ export const authSlice = createSlice({
         state.isLoggedIn = false;
         state.user = null;
         state.status = 'failed';
+      })
+      .addCase(oAuthLogin.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(oAuthLogin.fulfilled, (state) => {
+        state.isLoggedIn = true;
+        state.status = 'success';
+      })
+      .addCase(oAuthLogin.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
       });
   },
 });

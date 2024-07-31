@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../../store';
 import { newGame } from '../../../store/modules/gameState/gameStateSlice';
 
-// import './style.css';
+import styles from './style.module.css';
 
 type EndScreenProps = {
   value: number;
@@ -41,16 +41,30 @@ export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
       >
         <Typography
           component='h2'
-          variant='h3'
+          variant='h1'
           sx={{
+            background: 'linear-gradient(red 70%, yellow)',
+            '-webkit-background-clip': 'text',
+            '-webkit-text-fill-color': 'transparent',
             color: 'red',
           }}
+          textAlign={'center'}
+          maxWidth={500}
+          className={styles.game_over}
         >
           Конец Игры
         </Typography>
         <Typography
           component='h3'
           variant='h4'
+          className={styles.game_over}
+          textAlign={'center'}
+          sx={{
+            background: 'linear-gradient(#ff0 10%, #f00)',
+            '-webkit-background-clip': 'text',
+            '-webkit-text-fill-color': 'transparent',
+            color: '#ff0',
+          }}
         >
           Ваш счет: {value ?? 3000}
         </Typography>

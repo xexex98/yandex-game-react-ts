@@ -9,11 +9,15 @@ import Typography from '@mui/material/Typography';
 import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ErrorAuth } from '../../components/ErrorAuth';
 import { PasswordModal } from '../../components/PasswordModal';
-import { API_URL, APPLICATION_JSON } from '../../consts';
 import { validateAllFields, validateField } from '../../helpers/validate';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { AuthUserResponse, logout } from '../../store/modules/auth/authSlice';
+import {
+  AuthUserResponse,
+  editUser,
+  logout,
+} from '../../store/modules/auth/authSlice';
 
 type TUserData = {
   login: string;
@@ -28,7 +32,7 @@ type TUserErrors = Partial<TUserData>;
 const AVATAR_URL =
   'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x';
 
-type FormFields = Partial<AuthUserResponse>;
+export type ProfileFormFields = Partial<AuthUserResponse>;
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +41,7 @@ export const ProfilePage = () => {
   const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [formValues, setFormValues] = useState<FormFields>(user || {});
+  const [formValues, setFormValues] = useState<ProfileFormFields>(user || {});
   const [formErrors, setFormErrors] = useState<TUserErrors>({});
   const [avatarUrl, setAvatarUrl] = useState(AVATAR_URL);
 
@@ -80,13 +84,9 @@ export const ProfilePage = () => {
     const noErrors = Object.values(validationErrors).every((error) => !error);
 
     if (noErrors) {
-      fetch(`${API_URL}/user/profile`, {
-        method: 'PUT',
-        headers: APPLICATION_JSON,
-        body: JSON.stringify(formValues),
-        credentials: 'include',
-      });
-      navigate('/');
+      dispatch(editUser(formValues))
+        .unwrap()
+        .then(() => navigate('/'));
     }
   };
 
@@ -266,10 +266,22 @@ export const ProfilePage = () => {
                 type='submit'
                 fullWidth
                 variant='contained'
-                sx={{ mt: 2, mb: 2 }}
+                sx={{ mt: 2 }}
+                color='secondary'
               >
                 Save
               </Button>
+              <Button
+                type='button'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 2 }}
+                color='info'
+                onClick={() => navigate('/')}
+              >
+                Back
+              </Button>
+              <ErrorAuth />
             </Grid>
             <Grid
               item

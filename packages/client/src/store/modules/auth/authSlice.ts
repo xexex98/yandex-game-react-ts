@@ -7,6 +7,7 @@ import {
   REDIRECT_URI,
 } from '../../../consts';
 import { FormSignIn } from '../../../pages/login';
+import { ProfileFormFields } from '../../../pages/profile';
 import { FormSignUp } from '../../../pages/registration/lazy';
 
 type AuthState = {
@@ -151,13 +152,12 @@ export const oAuthServiceId = createAsyncThunk(
         `${API_URL}/oauth/yandex/service-id?redirect_uri=${REDIRECT_URI}`
       );
 
-      const data = await response.json();
-
       if (!response.ok) {
         return response.json().then((text) => {
           return rejectWithValue(text.reason);
         });
       }
+      const data = await response.json();
 
       window.open(
         `${OAUTH_URL}${data.service_id}&redirect_uri=${REDIRECT_URI}`,
@@ -170,6 +170,30 @@ export const oAuthServiceId = createAsyncThunk(
   }
 );
 
+export const editUser = createAsyncThunk(
+  'auth/setUser',
+  async (payload: ProfileFormFields, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_URL}/user/profile`, {
+        method: 'PUT',
+        headers: APPLICATION_JSON,
+        body: JSON.stringify(payload),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
 const initialState: AuthState = {
   status: 'idle',
   user: null,
@@ -263,8 +287,17 @@ export const authSlice = createSlice({
         if (typeof action.payload === 'string') {
           state.error = action.payload;
         }
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'success';
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
       });
   },
 });
-
 export default authSlice.reducer;

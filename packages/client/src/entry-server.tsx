@@ -3,13 +3,18 @@ import { Request as ExpressRequest } from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { matchRoutes } from 'react-router-dom';
 import {
   createStaticHandler,
   createStaticRouter,
   StaticRouterProvider,
 } from 'react-router-dom/server';
 
-import { createFetchRequest } from './entry-server.utils';
+import {
+  createContext,
+  createFetchRequest,
+  createUrl,
+} from './entry-server.utils';
 import routes from './routes';
 import { rootReducer } from './store';
 import { getCurrentUser } from './store/modules/auth/authSlice';
@@ -26,6 +31,30 @@ export const render = async (req: ExpressRequest) => {
   const store = configureStore({
     reducer: rootReducer,
   });
+
+  const url = createUrl(req);
+
+  const foundRoutes = matchRoutes(routes, url);
+
+  if (!foundRoutes) {
+    throw new Error('Page not found');
+  }
+
+  const [
+    {
+      route: { fetchData },
+    },
+  ] = foundRoutes;
+
+  try {
+    await fetchData({
+      dispatch: store.dispatch,
+      state: store.getState(),
+      ctx: createContext(req),
+    });
+  } catch (e) {
+    console.error('Error with page init', e);
+  }
 
   const router = createStaticRouter(dataRoutes, context);
 

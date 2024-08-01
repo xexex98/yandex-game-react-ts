@@ -3,6 +3,7 @@ import express from 'express';
 import fs from 'fs/promises';
 import path from 'node:path';
 import { createServer as createViteServer } from 'vite';
+import cookieParser = require('cookie-parser');
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ async function createServer() {
   });
 
   app.use(vite.middlewares);
+
+  app.use(cookieParser());
 
   app.get('*', async (req, res, next) => {
     const url = req.originalUrl;

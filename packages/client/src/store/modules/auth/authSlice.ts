@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { TChangePasswordFormValues } from '../../../components/PasswordModal';
 import {
   API_URL,
   APPLICATION_JSON,
@@ -194,6 +195,31 @@ export const editUser = createAsyncThunk(
     }
   }
 );
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async (payload: TChangePasswordFormValues, { rejectWithValue }) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...rest } = payload;
+
+      const response = await fetch(`${API_URL}/user/password`, {
+        method: 'PUT',
+        headers: APPLICATION_JSON,
+        body: JSON.stringify(rest),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
+
 const initialState: AuthState = {
   status: 'idle',
   user: null,
@@ -293,6 +319,15 @@ export const authSlice = createSlice({
         state.status = 'success';
       })
       .addCase(editUser.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.status = 'success';
+      })
+      .addCase(changePassword.rejected, (state, action) => {
         state.status = 'failed';
         if (typeof action.payload === 'string') {
           state.error = action.payload;

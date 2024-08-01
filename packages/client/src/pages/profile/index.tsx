@@ -38,12 +38,19 @@ export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [formValues, setFormValues] = useState<ProfileFormFields>(user || {});
   const [formErrors, setFormErrors] = useState<TUserErrors>({});
   const [avatarUrl, setAvatarUrl] = useState(AVATAR_URL);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+  const handleOpen = () => {
+    setModalOpen(true);
+  };
 
   const handleChangeAvatar = useCallback(() => {
     if (!inputRef.current?.files?.length) {
@@ -290,7 +297,7 @@ export const ProfilePage = () => {
               <Button
                 type='button'
                 fullWidth
-                onClick={() => setShowModal(true)}
+                onClick={handleOpen}
               >
                 Change password
               </Button>
@@ -298,8 +305,8 @@ export const ProfilePage = () => {
           </Grid>
         </Box>
         <PasswordModal
-          showModal={showModal}
-          setShowModal={setShowModal}
+          open={modalOpen}
+          onClose={handleClose}
         />
       </Box>
     </Container>

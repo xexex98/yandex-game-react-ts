@@ -1,10 +1,8 @@
 import { ComponentType } from 'react';
 
-//import { RouteObject } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initPrivateRoutePage, PrivateRoute } from './components/PrivateRoute';
 import { CustomRouteObject } from './consts';
-//import { ErrorPage } from './pages/error';
 import { ForumPage } from './pages/forum';
 import { GamePage } from './pages/game';
 import { LeaderBoardPage } from './pages/leader_board';
@@ -29,7 +27,6 @@ export type PageInitArgs = {
 
 const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType;
 
-//const routes: RouteObject[] = [
 const routes: CustomRouteObject[] = [
   {
     path: '*',
@@ -39,14 +36,12 @@ const routes: CustomRouteObject[] = [
   {
     path: '/',
     Component: MainPage,
-    //errorElement: <ErrorPage />,
     ErrorBoundary: MyErrorBoundary,
     fetchData: initMainPage,
   },
   {
     path: 'login',
     Component: SignIn,
-    //errorElement: <ErrorPage />,
     ErrorBoundary: MyErrorBoundary,
     fetchData: initLoginPage,
   },

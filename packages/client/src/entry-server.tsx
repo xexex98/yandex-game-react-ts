@@ -61,7 +61,6 @@ export const render = async (req: ExpressRequest) => {
   await store.dispatch(getCurrentUser());
 
   return {
-    // html: ReactDOM.renderToString(<Provider store={store}><App /></Provider>),
     html: ReactDOM.renderToString(
       <Provider store={store}>
         <StaticRouterProvider

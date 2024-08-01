@@ -24,7 +24,7 @@ export const MainPage = () => {
     } else if (!isLoggedIn && status !== 'loading') {
       dispatch(getCurrentUser());
     }
-  }, [isLoggedIn, dispatch, code, searchParams, setSearchParams]);
+  }, [isLoggedIn, code]);
 
   if (status === 'loading' || status === 'idle') {
     return <Loader />;

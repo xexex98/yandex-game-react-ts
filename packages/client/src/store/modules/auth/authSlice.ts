@@ -220,13 +220,10 @@ export const authSlice = createSlice({
         state.status = 'success';
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
-        if (
-          typeof action.payload === 'string' &&
-          !action.payload.includes('Cookie')
-        ) {
+        if (typeof action.payload === 'string') {
           state.error = action.payload;
-          state.status = 'failed';
         }
+        state.status = 'failed';
         state.isLoggedIn = false;
         state.user = null;
       })

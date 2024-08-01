@@ -12,16 +12,19 @@ import { GameButtons } from './GameButtons';
 export const MainPage = () => {
   const { isLoggedIn, status } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const code = searchParams.get('code');
 
   useEffect(() => {
     if (code && !isLoggedIn) {
       dispatch(oAuthLogin(code));
-    } else if (!isLoggedIn) {
+      searchParams.delete('code');
+      searchParams.delete('cid');
+      setSearchParams(searchParams);
+    } else if (!isLoggedIn && status !== 'loading') {
       dispatch(getCurrentUser());
     }
-  }, [isLoggedIn, dispatch, code]);
+  }, [isLoggedIn, dispatch, code, searchParams, setSearchParams]);
 
   if (status === 'loading' || status === 'idle') {
     return <Loader />;

@@ -1,5 +1,4 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ErrorAuth } from '../../components/ErrorAuth';
 import { validateAllFields, validateField } from '../../helpers/validate';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -19,6 +19,7 @@ import {
   login,
   oAuthServiceId,
 } from '../../store/modules/auth/authSlice';
+import { YandexLogoIcon } from './components/YandexLogoIcon';
 
 export type FormSignIn = {
   login: string;
@@ -30,7 +31,7 @@ type FormSignInErrors = Partial<FormSignIn>;
 export function SignIn() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoggedIn, status, error } = useAppSelector((state) => state.auth);
+  const { isLoggedIn, status } = useAppSelector((state) => state.auth);
 
   const [formValues, setFormValues] = useState<FormSignIn>({
     login: '',
@@ -145,47 +146,35 @@ export function SignIn() {
             id='password'
             autoComplete='current-password'
           />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
-          <Button
-            onClick={handleClick}
-            fullWidth
+          <Box
             sx={{
-              backgroundColor: 'black',
-              '&:hover': { backgroundColor: 'crimson' },
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: 2,
+              mt: 2,
+              mb: 2,
             }}
           >
-            <svg
-              width='24'
-              height='24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
             >
-              <path
-                d='M2.04 12c0-5.523 4.476-10 10-10 5.522 0 10 4.477 10 10s-4.478 10-10 10c-5.524 0-10-4.477-10-10z'
-                fill='#FC3F1D'
-              />
-              <path
-                d='M13.32 7.666h-.924c-1.694 0-2.585.858-2.585 2.123 0 1.43.616 2.1 1.881 2.959l1.045.704-3.003 4.487H7.49l2.695-4.014c-1.55-1.111-2.42-2.19-2.42-4.015 0-2.288 1.595-3.85 4.62-3.85h3.003v11.868H13.32V7.666z'
-                fill='#fff'
-              />
-            </svg>
-          </Button>
-          {status === 'failed' && (
-            <Alert
-              sx={{ mt: 1, mb: 2 }}
-              severity='error'
-              variant='outlined'
+              Sign In
+            </Button>
+            <Button
+              onClick={handleClick}
+              fullWidth
+              sx={{
+                backgroundColor: 'black',
+                '&:hover': { backgroundColor: 'crimson' },
+              }}
             >
-              {error}
-            </Alert>
-          )}
+              <YandexLogoIcon />
+            </Button>
+            <ErrorAuth />
+          </Box>
           <Grid container>
             <Link
               href='registration'

@@ -3,3 +3,5 @@ export const APPLICATION_JSON = {
 };
 export const API_URL = 'https://ya-praktikum.tech/api/v2';
 export const REDIRECT_URI = __REDIRECT_URI__ || 'http://localhost:3000';
+export const OAUTH_URL =
+  'https://oauth.yandex.ru/authorize?response_type=code&client_id=';

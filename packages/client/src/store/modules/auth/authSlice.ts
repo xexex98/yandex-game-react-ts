@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { API_URL, APPLICATION_JSON, REDIRECT_URI } from '../../../consts';
+import {
+  API_URL,
+  APPLICATION_JSON,
+  OAUTH_URL,
+  REDIRECT_URI,
+} from '../../../consts';
 import { FormSignIn } from '../../../pages/login';
 import { FormSignUp } from '../../../pages/registration/lazy';
 
@@ -114,11 +119,12 @@ export const logout = createAsyncThunk(
 );
 export const oAuthLogin = createAsyncThunk(
   'auth/oAuthLogin',
-  async (code: string, { rejectWithValue }) => {
+  async (code: string, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(`${API_URL}/oauth/yandex`, {
         method: 'POST',
         headers: APPLICATION_JSON,
+        credentials: 'include',
         body: JSON.stringify({
           code: code,
           redirect_uri: REDIRECT_URI,
@@ -130,6 +136,7 @@ export const oAuthLogin = createAsyncThunk(
           return rejectWithValue(text.reason);
         });
       }
+      await dispatch(getCurrentUser());
     } catch (error) {
       return rejectWithValue((error as Error).message || error);
     }
@@ -153,7 +160,7 @@ export const oAuthServiceId = createAsyncThunk(
       }
 
       window.open(
-        `https://oauth.yandex.ru/authorize?response_type=code&client_id=${data.service_id}&redirect_uri=${REDIRECT_URI}`,
+        `${OAUTH_URL}${data.service_id}&redirect_uri=${REDIRECT_URI}`,
         '_self'
       );
       return;
@@ -213,13 +220,15 @@ export const authSlice = createSlice({
         state.status = 'success';
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
-        state.status = 'failed';
-        if (typeof action.payload === 'string') {
+        if (
+          typeof action.payload === 'string' &&
+          !action.payload.includes('Cookie')
+        ) {
           state.error = action.payload;
+          state.status = 'failed';
         }
         state.isLoggedIn = false;
         state.user = null;
-        state.status = 'failed';
       })
       .addCase(logout.pending, (state) => {
         state.status = 'loading';
@@ -247,6 +256,12 @@ export const authSlice = createSlice({
       })
       .addCase(oAuthLogin.rejected, (state, action) => {
         state.isLoggedIn = false;
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
+      })
+      .addCase(oAuthServiceId.rejected, (state, action) => {
         state.status = 'failed';
         if (typeof action.payload === 'string') {
           state.error = action.payload;

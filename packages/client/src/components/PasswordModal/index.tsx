@@ -75,7 +75,9 @@ export const PasswordModal = ({ open, onClose }: TProps) => {
     const noErrors = Object.values(validationErrors).every((error) => !error);
 
     if (noErrors) {
-      dispatch(changePassword(formValues));
+      dispatch(changePassword(formValues))
+        .unwrap()
+        .then(() => onClose());
     }
   };
 

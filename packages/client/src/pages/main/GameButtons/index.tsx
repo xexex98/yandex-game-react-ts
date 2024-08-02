@@ -29,6 +29,17 @@ export const GameButtons: FC = () => {
           </Button>
         </Link>
         <Link
+          to='leaders'
+          className={style.link}
+        >
+          <Button
+            variant='contained'
+            className={style.button}
+          >
+            Таблица лидеров
+          </Button>
+        </Link>
+        <Link
           to='forum'
           className={style.link}
         >

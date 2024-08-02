@@ -3,8 +3,9 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { authSlice } from './modules/auth/authSlice';
 import { gameStateSlice } from './modules/gameState/gameStateSlice';
+import { leaderboardSlice } from './modules/leaderboard/leaderboardSlice';
 
-const rootReducer = combineSlices(authSlice, gameStateSlice);
+const rootReducer = combineSlices(authSlice, gameStateSlice, leaderboardSlice);
 
 export const store = configureStore({
   reducer: rootReducer,

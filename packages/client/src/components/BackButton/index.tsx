@@ -4,11 +4,15 @@ import { FC } from 'react';
 
 type BackButtonPros = {
   href: string;
+  style: React.CSSProperties | undefined;
 };
 
-export const BackButton: FC<BackButtonPros> = ({ href }) => {
+export const BackButton: FC<BackButtonPros> = ({ href, style }) => {
   return (
-    <Link href={href}>
+    <Link
+      href={href}
+      style={style}
+    >
       <Button
         variant='contained'
         startIcon={<ArrowBack />}

@@ -1,68 +1,30 @@
 import { Box, Container, Typography } from '@mui/material';
+import { useEffect } from 'react';
 
+import { BackButton } from '../../components/BackButton';
+import { Loader } from '../../components/Loader';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getAllLeaderboard } from '../../store/modules/leaderboard/leaderboardSlice';
+import { selectLeaderboard } from '../../store/modules/leaderboard/selectors';
 import { CardTop3User } from './components/CardTop3User';
 import { CardTopUser } from './components/CardTopUser';
 
 export const LeaderBoardPage = () => {
-  const users = [
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-    {
-      login: 'player',
-      rating: 3000,
-    },
-  ];
+  const { leaderboard, status } = useAppSelector(selectLeaderboard);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllLeaderboard());
+  }, [dispatch]);
+
+  if (status === 'loading') {
+    return <Loader />;
+  }
 
   return (
     <Box
       sx={{
-        background: '#2C2F35',
         height: '100vh',
         color: '#FFFEFD',
       }}
@@ -71,13 +33,27 @@ export const LeaderBoardPage = () => {
         component='main'
         sx={{ display: 'flex', flexDirection: 'column' }}
       >
-        <Typography
-          component='h2'
-          variant='h5'
-          sx={{ textAlign: 'center', margin: '24px 0' }}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            position: 'relative',
+            justifyContent: 'center',
+          }}
         >
-          Leaderboard
-        </Typography>
+          <BackButton
+            href='/'
+            style={{ position: 'absolute', left: 0 }}
+          />
+          <Typography
+            component='h2'
+            variant='h5'
+            sx={{ textAlign: 'center', margin: '24px 0' }}
+          >
+            Leaderboard
+          </Typography>
+        </Box>
+
         <Box
           sx={{
             display: 'flex',
@@ -93,7 +69,7 @@ export const LeaderBoardPage = () => {
               gap: 10,
             }}
           >
-            {users.slice(0, 3).map((card, index) => {
+            {leaderboard.slice(0, 3).map((card, index) => {
               return (
                 <Box
                   key={index}
@@ -121,7 +97,7 @@ export const LeaderBoardPage = () => {
               marginTop: 10,
             }}
           >
-            {users.slice(3, 13).map((card, index) => {
+            {leaderboard.slice(3, 13).map((card, index) => {
               return (
                 <CardTopUser
                   key={index}

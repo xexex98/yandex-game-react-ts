@@ -23,6 +23,7 @@ import {
   logout,
   selectUser,
 } from '../../store/modules/auth/authSlice';
+//import { selectUser } from '../../store/modules/auth/selectors';
 
 type TUserData = {
   login: string;

@@ -15,7 +15,7 @@ declare global {
 }
 
 export const rootReducer = combineSlices(authSlice, gameStateSlice);
-// const rootReducer = combineReducers({});
+// export const rootReducer = combineSlices(authSlice, gameStateSlice, leaderboardSlice);
 
 export const store = configureStore({
   reducer: rootReducer,

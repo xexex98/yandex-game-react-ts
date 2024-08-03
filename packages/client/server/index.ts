@@ -1,9 +1,9 @@
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs/promises';
 import path from 'node:path';
 import { createServer as createViteServer } from 'vite';
-import cookieParser = require('cookie-parser');
 
 dotenv.config();
 

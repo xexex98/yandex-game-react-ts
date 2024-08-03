@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const promises_1 = __importDefault(require("fs/promises"));
 const node_path_1 = __importDefault(require("node:path"));
 const vite_1 = require("vite");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 const port = process.env.PORT || 80;
 const clientPath = node_path_1.default.join(__dirname, '..');
@@ -19,14 +20,17 @@ async function createServer() {
         appType: 'custom',
     });
     app.use(vite.middlewares);
+    app.use((0, cookie_parser_1.default)());
     app.get('*', async (req, res, next) => {
         const url = req.originalUrl;
         try {
             let template = await promises_1.default.readFile(node_path_1.default.resolve(clientPath, 'index.html'), 'utf-8');
             template = await vite.transformIndexHtml(url, template);
             const { render } = await vite.ssrLoadModule(node_path_1.default.join(clientPath, 'src/entry-server.tsx'));
-            const appHtml = await render();
-            const html = template.replace(`<!--ssr-outlet-->`, appHtml);
+            const { html: appHtml, initialState } = await render(req);
+            const html = template
+                .replace(`<!--ssr-outlet-->`, appHtml)
+                .replace(`<!--ssr-initial-state-->`, `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`);
             res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
         }
         catch (e) {

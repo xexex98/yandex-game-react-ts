@@ -38,3 +38,5 @@ export const TopicPage = () => {
     </Container>
   );
 };
+
+export const initTopicPage = () => Promise.resolve();

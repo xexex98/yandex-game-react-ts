@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { API_URL, APPLICATION_JSON } from '../../../consts';
 import { FormSignIn } from '../../../pages/login';
 import { FormSignUp } from '../../../pages/registration/lazy';
+import { RootState } from '../..';
 
 type AuthState = {
   isLoggedIn: boolean;
@@ -192,3 +193,7 @@ export const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+
+export const selectUser = (state: RootState) => state.auth.user;
+
+export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;

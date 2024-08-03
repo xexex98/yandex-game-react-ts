@@ -27,38 +27,36 @@ export const MainPage = () => {
       searchParams.delete('code');
       searchParams.delete('cid');
       setSearchParams(searchParams);
-    } else if (!isLoggedIn && status !== 'loading') {
-      dispatch(getCurrentUser());
     }
   }, [isLoggedIn, code]);
 
   usePage({ initPage: initMainPage });
 
+  if (status === 'loading' || status === 'idle') {
+    return <Loader />;
+  }
+
   return (
     <div>
-      {status === 'loading' || status === 'idle' ? (
-        <Loader />
-      ) : (
-        <Box
-          height={'100vh'}
-          display={'flex'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          flexDirection={'column'}
-        >
-          <img
-            src={Logo}
-            style={{ height: 100, marginBottom: 40 }}
-          />
-          {isLoggedIn ? <GameButtons /> : <AuthButtons />}
-        </Box>
-      )}
+      <Box
+        height={'100vh'}
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        flexDirection={'column'}
+      >
+        <img
+          src={Logo}
+          style={{ height: 100, marginBottom: 40 }}
+        />
+        {isLoggedIn ? <GameButtons /> : <AuthButtons />}
+      </Box>
     </div>
   );
 };
 
 export const initMainPage = async ({ dispatch, state }: PageInitArgs) => {
-  if (!selectIsLoggedIn(state)) {
+  if (!selectIsLoggedIn(state) && state.auth.status !== 'loading') {
     return dispatch(getCurrentUser());
   }
 };

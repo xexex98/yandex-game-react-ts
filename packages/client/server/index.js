@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const promises_1 = __importDefault(require("fs/promises"));
 const node_path_1 = __importDefault(require("node:path"));
 const vite_1 = require("vite");
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 const port = process.env.PORT || 3000;
 const clientPath = node_path_1.default.join(__dirname, '..');

@@ -1,6 +1,3 @@
-import { ComponentType } from 'react';
-
-import { ErrorBoundary } from './components/ErrorBoundary';
 import { initPrivateRoutePage, PrivateRoute } from './components/PrivateRoute';
 import { CustomRouteObject } from './consts';
 import { ForumPage } from './pages/forum';
@@ -25,7 +22,7 @@ export type PageInitArgs = {
   ctx?: PageInitContext;
 };
 
-const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType;
+//const MyErrorBoundary = { ErrorBoundary } as unknown as ComponentType;
 
 const routes: CustomRouteObject[] = [
   {
@@ -36,19 +33,19 @@ const routes: CustomRouteObject[] = [
   {
     path: '/',
     Component: MainPage,
-    ErrorBoundary: MyErrorBoundary,
+    //ErrorBoundary: MyErrorBoundary,
     fetchData: initMainPage,
   },
   {
     path: 'login',
     Component: SignIn,
-    ErrorBoundary: MyErrorBoundary,
+    //ErrorBoundary: MyErrorBoundary,
     fetchData: initLoginPage,
   },
   {
     path: 'registration',
     Component: LazySignUp,
-    ErrorBoundary: MyErrorBoundary,
+    //ErrorBoundary: MyErrorBoundary,
     fetchData: initRegistrationPage,
   },
   {
@@ -58,22 +55,22 @@ const routes: CustomRouteObject[] = [
       {
         path: 'profile',
         Component: ProfilePage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
       },
       {
         path: 'game',
         Component: GamePage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
       },
       {
         path: 'leaders',
         Component: LeaderBoardPage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
       },
       {
         path: 'forum',
         Component: ForumPage,
-        ErrorBoundary: MyErrorBoundary,
+        //ErrorBoundary: MyErrorBoundary,
         children: [
           {
             path: 'topic/:id',

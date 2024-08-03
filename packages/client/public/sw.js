@@ -43,6 +43,7 @@ self.addEventListener('fetch', event => {
 
         const fetchRequest = event.request.clone();
         // В противном случае делаем запрос на сервер
+
         return fetch(fetchRequest)
           // Можно задавать дополнительные параметры запроса, если ответ вернулся некорректный.
           .then(response => {
@@ -53,6 +54,7 @@ self.addEventListener('fetch', event => {
 
               const responseToCache = response.clone();
               // Получаем доступ к кешу по CACHE_NAME
+
               caches.open(CACHE_NAME)
                 .then(cache => {
                   // Записываем в кеш ответ, используя в качестве ключа запрос

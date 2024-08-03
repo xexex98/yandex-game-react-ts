@@ -10,6 +10,7 @@ import {
 import { FormSignIn } from '../../../pages/login';
 import { ProfileFormFields } from '../../../pages/profile';
 import { FormSignUp } from '../../../pages/registration/lazy';
+import { RootState } from '../..';
 
 type AuthState = {
   isLoggedIn: boolean;
@@ -336,3 +337,7 @@ export const authSlice = createSlice({
   },
 });
 export default authSlice.reducer;
+
+export const selectUser = (state: RootState) => state.auth.user;
+
+export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;

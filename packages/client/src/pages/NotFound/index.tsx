@@ -42,3 +42,5 @@ export const NotFound = () => {
     </Box>
   );
 };
+
+export const initNotFoundPage = () => Promise.resolve();

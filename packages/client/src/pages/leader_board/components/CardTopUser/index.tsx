@@ -3,6 +3,9 @@ import { FC } from 'react';
 
 import { CardTop3UserProps } from '../types/CardProps';
 
+const AVATAR_URL =
+  'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x';
+
 export const CardTopUser: FC<CardTop3UserProps> = ({ card, position }) => {
   return (
     <Box
@@ -25,11 +28,17 @@ export const CardTopUser: FC<CardTop3UserProps> = ({ card, position }) => {
           top: '-6px',
           right: '5px',
           rotate: '20deg',
+          color: '#F9D838',
         }}
       >
         {position}
       </Typography>
-      <Avatar />
+      <Avatar
+        src={card.avatar ?? AVATAR_URL}
+        sx={{
+          backgroundColor: '#e3e3e3',
+        }}
+      />
 
       <Box
         sx={{

@@ -1,23 +1,29 @@
-import { Avatar } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ErrorAuth } from '../../components/ErrorAuth';
 import { PasswordModal } from '../../components/PasswordModal';
 import { validateAllFields, validateField } from '../../helpers/validate';
+import { usePage } from '../../hooks/usePage';
+import { PageInitArgs } from '../../routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   AuthUserResponse,
   editUser,
+  getCurrentUser,
   logout,
 } from '../../store/modules/auth/authSlice';
+import { selectUser } from '../../store/modules/auth/selectors';
 
 type TUserData = {
   login: string;
@@ -36,7 +42,7 @@ export type ProfileFormFields = Partial<AuthUserResponse>;
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const user = useAppSelector(selectUser);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -100,6 +106,8 @@ export const ProfilePage = () => {
   const handleLogout = async () => {
     await dispatch(logout());
   };
+
+  usePage({ initPage: initProfilePage });
 
   return (
     <Container
@@ -311,4 +319,10 @@ export const ProfilePage = () => {
       </Box>
     </Container>
   );
+};
+
+export const initProfilePage = async ({ dispatch, state }: PageInitArgs) => {
+  if (!selectUser(state)) {
+    return dispatch(getCurrentUser());
+  }
 };

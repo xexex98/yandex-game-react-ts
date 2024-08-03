@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs/promises';
@@ -21,6 +22,8 @@ async function createServer() {
 
   app.use(vite.middlewares);
 
+  app.use(cookieParser());
+
   app.get('*', async (req, res, next) => {
     const url = req.originalUrl;
 
@@ -36,9 +39,14 @@ async function createServer() {
         path.join(clientPath, 'src/entry-server.tsx')
       );
 
-      const appHtml = await render();
+      const { html: appHtml, initialState } = await render(req);
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml);
+      const html = template
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(
+          `<!--ssr-initial-state-->`,
+          `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`
+        );
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e) {

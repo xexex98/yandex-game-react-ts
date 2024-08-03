@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from '@mui/material';
-import { FC, MouseEventHandler, useCallback } from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useAppDispatch } from '../../../store';
+import { setRatingTeam } from '../../../api/leaderboard';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import { selectUser } from '../../../store/modules/auth/selectors';
 import { newGame } from '../../../store/modules/gameState/gameStateSlice';
 
 import styles from './style.module.css';
@@ -14,6 +16,21 @@ type EndScreenProps = {
 
 export const EndScreen: FC<EndScreenProps> = ({ value, onClick }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    const setRating = async () => {
+      try {
+        if (user?.login && value >= 0) {
+          await setRatingTeam({ login: user.login, rating: value });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    setRating();
+  }, [user?.login, value]);
 
   const startNewGame = useCallback(() => {
     dispatch(newGame());

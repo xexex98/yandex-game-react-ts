@@ -77,7 +77,7 @@
     "src/**/*.test.ts",
     "mocks/*",
     "setupTests.js",
-    "server/*.js"
-
+    "server/*.js",
+    "src/entry-server.utils.ts"
   ]
 }

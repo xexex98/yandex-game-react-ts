@@ -16,8 +16,10 @@ function scanDirectory(directory) {
       scanDirectory(filePath);
     } else {
       const ext = path.extname(file);
+
       if (staticFileExtensions.includes(ext)) {
         const url = filePath.replace(/\\/g, '/').replace(/^dist\//, '/');
+
         urls.push(url);
       }
     }

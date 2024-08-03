@@ -21,9 +21,9 @@ import {
   AuthUserResponse,
   getCurrentUser,
   logout,
-  selectUser,
+  // selectUser,
 } from '../../store/modules/auth/authSlice';
-//import { selectUser } from '../../store/modules/auth/selectors';
+import { selectUser } from '../../store/modules/auth/selectors';
 
 type TUserData = {
   login: string;
@@ -42,7 +42,7 @@ type FormFields = Partial<AuthUserResponse>;
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const user = useAppSelector(selectUser);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

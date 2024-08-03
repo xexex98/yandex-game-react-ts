@@ -7,6 +7,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { authSlice } from './modules/auth/authSlice';
 import { gameStateSlice } from './modules/gameState/gameStateSlice';
+import { leaderboardSlice } from './modules/leaderboard/leaderboardSlice';
 
 declare global {
   interface Window {
@@ -14,8 +15,7 @@ declare global {
   }
 }
 
-export const rootReducer = combineSlices(authSlice, gameStateSlice);
-// export const rootReducer = combineSlices(authSlice, gameStateSlice, leaderboardSlice);
+export const rootReducer = combineSlices(authSlice, gameStateSlice, leaderboardSlice);
 
 export const store = configureStore({
   reducer: rootReducer,

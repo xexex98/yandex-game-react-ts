@@ -1,133 +1,177 @@
-import { Modal } from '@mui/material';
+import { IconButton, Modal } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
+
+import { validateAllFields, validateField } from '../../helpers/validate';
+import { useAppDispatch } from '../../store';
+import { changePassword } from '../../store/modules/auth/authSlice';
+import { ErrorAuth } from '../ErrorAuth';
 
 type TProps = {
-  showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
+  onClose: () => void;
 };
 
-export const PasswordModal = ({ showModal, setShowModal }: TProps) => {
-  const handlePassword = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+export type TChangePasswordFormValues = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
-    // const data = new FormData(e.currentTarget);
+type TFormErrors = Partial<TChangePasswordFormValues>;
 
-    // console.log('Change password', data);
-  }, []);
+export const PasswordModal = ({ open, onClose }: TProps) => {
+  const dispatch = useAppDispatch();
+  const [formValues, setFormValues] = useState<TChangePasswordFormValues>({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [formErrors, setFormErrors] = useState<TFormErrors>({});
 
-  const handleClick = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      const target = e.target;
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
-      if (target?.getAttribute('data-role') === 'saver') {
-        setShowModal(false);
-      }
-    },
-    [setShowModal]
-  );
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    const error = validateField(name, value);
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
+  const handleBlurConfirmPassword = (
+    event: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+
+    const error = validateField(name, value, formValues.newPassword);
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const validationErrors = validateAllFields(formValues);
+
+    setFormErrors(validationErrors);
+
+    const noErrors = Object.values(validationErrors).every((error) => !error);
+
+    if (noErrors) {
+      dispatch(changePassword(formValues))
+        .unwrap()
+        .then(() => onClose());
+    }
+  };
 
   return (
     <Modal
-      open={showModal}
-      onClose={() => setShowModal(false)}
-      aria-labelledby='modal-password'
-      aria-describedby='modal-modal-description'
+      open={open}
+      onClose={onClose}
+      aria-labelledby='change-password-modal'
+      aria-describedby='change-password-modal-description'
     >
       <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
         sx={{
-          height: '100%',
-          padding: '0 30px 100px 30px',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+          boxShadow: 24,
+          p: 4,
         }}
-        data-role='saver'
-        onClick={handleClick}
       >
+        <IconButton
+          sx={{ position: 'absolute', top: 8, right: 8 }}
+          onClick={onClose}
+        >
+          X
+        </IconButton>
+        <Typography
+          id='change-password-modal'
+          variant='h6'
+          component='h2'
+        >
+          Change Password
+        </Typography>
         <Box
           component='form'
-          sx={{
-            width: '100%',
-            maxWidth: 400,
-            backgroundColor: '#fff',
-            padding: '20px',
-            borderRadius: '10px',
-            boxShadow: '0 0 20px 0 #00000040',
-          }}
-          onSubmit={handlePassword}
+          sx={{ mt: 2 }}
+          onSubmit={handleSubmit}
+          noValidate
         >
-          <Grid
-            container
-            spacing={2}
+          <TextField
+            fullWidth
+            label='Old Password'
+            type='password'
+            variant='outlined'
+            margin='normal'
+            name='oldPassword'
+            value={formValues.oldPassword}
+            error={Boolean(formErrors.oldPassword)}
+            helperText={formErrors.oldPassword}
+            onChange={handleChangeInput}
+            onBlur={handleBlur}
+            required
+          />
+          <TextField
+            fullWidth
+            label='New Password'
+            type='password'
+            variant='outlined'
+            margin='normal'
+            name='newPassword'
+            value={formValues.newPassword}
+            error={Boolean(formErrors.newPassword)}
+            helperText={formErrors.newPassword}
+            onChange={handleChangeInput}
+            onBlur={handleBlur}
+            required
+          />
+          <TextField
+            fullWidth
+            label='Confirm New Password'
+            type='password'
+            variant='outlined'
+            margin='normal'
+            name='confirmPassword'
+            value={formValues.confirmPassword}
+            error={Boolean(formErrors.confirmPassword)}
+            helperText={formErrors.confirmPassword}
+            onChange={handleChangeInput}
+            onBlur={handleBlurConfirmPassword}
+            required
+          />
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            fullWidth
+            sx={{ mt: 2 }}
           >
-            <Grid
-              item
-              xs={12}
-            >
-              <Typography
-                id='modal-password'
-                variant='h6'
-                component='h2'
-                style={{ textAlign: 'center' }}
-              >
-                Change password form
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <TextField
-                required
-                fullWidth
-                label='Old password'
-                name='old_password'
-                type='password'
-              ></TextField>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <TextField
-                required
-                fullWidth
-                label='New password'
-                name='new_password'
-                type='password'
-              ></TextField>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <TextField
-                required
-                fullWidth
-                label='Repeat new password'
-                name='repeat_password'
-                type='password'
-              ></TextField>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Change
-              </Button>
-            </Grid>
-          </Grid>
+            Submit
+          </Button>
+          <ErrorAuth />
         </Box>
       </Box>
     </Modal>

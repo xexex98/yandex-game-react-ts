@@ -1,7 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { API_URL, APPLICATION_JSON } from '../../../consts';
+import { TChangePasswordFormValues } from '../../../components/PasswordModal';
+import {
+  API_URL,
+  APPLICATION_JSON,
+  OAUTH_URL,
+  REDIRECT_URI,
+} from '../../../consts';
 import { FormSignIn } from '../../../pages/login';
+import { ProfileFormFields } from '../../../pages/profile';
 import { FormSignUp } from '../../../pages/registration/lazy';
 import { RootState } from '../..';
 
@@ -113,6 +120,106 @@ export const logout = createAsyncThunk(
     }
   }
 );
+export const oAuthLogin = createAsyncThunk(
+  'auth/oAuthLogin',
+  async (code: string, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await fetch(`${API_URL}/oauth/yandex`, {
+        method: 'POST',
+        headers: APPLICATION_JSON,
+        credentials: 'include',
+        body: JSON.stringify({
+          code: code,
+          redirect_uri: REDIRECT_URI,
+        }),
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+      await dispatch(getCurrentUser());
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
+
+export const oAuthServiceId = createAsyncThunk(
+  'auth/oAuthServiceId',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/oauth/yandex/service-id?redirect_uri=${REDIRECT_URI}`
+      );
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+      const data = await response.json();
+
+      window.open(
+        `${OAUTH_URL}${data.service_id}&redirect_uri=${REDIRECT_URI}`,
+        '_self'
+      );
+      return;
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
+
+export const editUser = createAsyncThunk(
+  'auth/setUser',
+  async (payload: ProfileFormFields, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_URL}/user/profile`, {
+        method: 'PUT',
+        headers: APPLICATION_JSON,
+        body: JSON.stringify(payload),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async (payload: TChangePasswordFormValues, { rejectWithValue }) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...rest } = payload;
+
+      const response = await fetch(`${API_URL}/user/password`, {
+        method: 'PUT',
+        headers: APPLICATION_JSON,
+        body: JSON.stringify(rest),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        return response.json().then((text) => {
+          return rejectWithValue(text.reason);
+        });
+      }
+    } catch (error) {
+      return rejectWithValue((error as Error).message || error);
+    }
+  }
+);
 
 const initialState: AuthState = {
   status: 'idle',
@@ -164,13 +271,12 @@ export const authSlice = createSlice({
         state.status = 'success';
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
-        state.status = 'failed';
         if (typeof action.payload === 'string') {
           state.error = action.payload;
         }
+        state.status = 'failed';
         state.isLoggedIn = false;
         state.user = null;
-        state.status = 'failed';
       })
       .addCase(logout.pending, (state) => {
         state.status = 'loading';
@@ -188,10 +294,48 @@ export const authSlice = createSlice({
         state.isLoggedIn = false;
         state.user = null;
         state.status = 'failed';
+      })
+      .addCase(oAuthLogin.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(oAuthLogin.fulfilled, (state) => {
+        state.isLoggedIn = true;
+        state.status = 'success';
+      })
+      .addCase(oAuthLogin.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
+      })
+      .addCase(oAuthServiceId.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'success';
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.status = 'success';
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.status = 'failed';
+        if (typeof action.payload === 'string') {
+          state.error = action.payload;
+        }
       });
   },
 });
-
 export default authSlice.reducer;
 
 export const selectUser = (state: RootState) => state.auth.user;

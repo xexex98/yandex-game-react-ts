@@ -1,10 +1,7 @@
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
-  Alert,
   Box,
   Button,
   Container,
-  // Avatar,
   CssBaseline,
   Grid,
   Link,
@@ -15,9 +12,15 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ErrorAuth } from '../../components/ErrorAuth';
 import { validateAllFields, validateField } from '../../helpers/validate';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getCurrentUser, login } from '../../store/modules/auth/authSlice';
+import {
+  getCurrentUser,
+  login,
+  oAuthServiceId,
+} from '../../store/modules/auth/authSlice';
+import { YandexLogoIcon } from './components/YandexLogoIcon';
 
 export type FormSignIn = {
   login: string;
@@ -29,7 +32,7 @@ type FormSignInErrors = Partial<FormSignIn>;
 export const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoggedIn, status, error } = useAppSelector((state) => state.auth);
+  const { isLoggedIn, status } = useAppSelector((state) => state.auth);
 
   const [formValues, setFormValues] = useState<FormSignIn>({
     login: '',
@@ -79,6 +82,10 @@ export const SignIn = () => {
     if (noErrors) {
       await dispatch(login(formValues));
     }
+  };
+
+  const handleClick = () => {
+    dispatch(oAuthServiceId());
   };
 
   return (
@@ -137,23 +144,35 @@ export const SignIn = () => {
             id='password'
             autoComplete='current-password'
           />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2 }}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: 2,
+              mt: 2,
+              mb: 2,
+            }}
           >
-            Sign In
-          </Button>
-          {status === 'failed' && (
-            <Alert
-              sx={{ mt: 1, mb: 2 }}
-              severity='error'
-              variant='outlined'
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
             >
-              {error}
-            </Alert>
-          )}
+              Sign In
+            </Button>
+            <Button
+              onClick={handleClick}
+              fullWidth
+              sx={{
+                backgroundColor: 'black',
+                '&:hover': { backgroundColor: 'crimson' },
+              }}
+            >
+              <YandexLogoIcon />
+            </Button>
+            <ErrorAuth />
+          </Box>
           <Grid container>
             <Link
               href='registration'

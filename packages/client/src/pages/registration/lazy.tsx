@@ -1,6 +1,5 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
-  Alert,
   Avatar,
   Box,
   Button,
@@ -14,6 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ErrorAuth } from '../../components/ErrorAuth';
 import { validateAllFields, validateField } from '../../helpers/validate';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { register } from '../../store/modules/auth/authSlice';
@@ -32,7 +32,7 @@ type FormSignUpErrors = Partial<FormSignUp>;
 export function SignUp() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { status, error } = useAppSelector((state) => state.auth);
+  const { status } = useAppSelector((state) => state.auth);
 
   const [formValues, setFormValues] = useState<FormSignUp>({
     first_name: '',
@@ -47,7 +47,7 @@ export function SignUp() {
 
   useEffect(() => {
     if (status === 'success') {
-      navigate('/profile');
+      navigate('/');
     }
   }, [status, navigate]);
 
@@ -239,15 +239,7 @@ export function SignUp() {
           >
             Sign Up
           </Button>
-          {status === 'failed' && (
-            <Alert
-              sx={{ mt: 1, mb: 2 }}
-              severity='error'
-              variant='outlined'
-            >
-              {error}
-            </Alert>
-          )}
+          <ErrorAuth />
           <Grid
             container
             justifyContent='flex-end'

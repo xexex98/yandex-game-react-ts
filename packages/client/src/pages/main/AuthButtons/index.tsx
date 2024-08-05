@@ -2,6 +2,8 @@ import { Box, Button } from '@mui/material';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ErrorAuth } from '../../../components/ErrorAuth';
+
 import style from './AuthButtons.module.css';
 
 export const AuthButtons: FC = () => {
@@ -31,7 +33,6 @@ export const AuthButtons: FC = () => {
             Войти
           </Button>
         </Link>
-
         <Link
           to='registration'
           className={style.link}
@@ -43,6 +44,7 @@ export const AuthButtons: FC = () => {
             Зарегистрироваться
           </Button>
         </Link>
+        <ErrorAuth />
       </Box>
     </Box>
   );

@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { Request as ExpressRequest } from 'express';
-import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { matchRoutes } from 'react-router-dom';

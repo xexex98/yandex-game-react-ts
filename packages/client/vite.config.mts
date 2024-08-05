@@ -10,7 +10,8 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT) || 3000,
   },
   define: {
+    __REDIRECT_URI__: String(process.env.REDIRECT_URI),
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
   plugins: [react()],
-})
+});

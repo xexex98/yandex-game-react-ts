@@ -1,8 +1,4 @@
-import {
-  combineSlices,
-  configureStore,
-  // combineReducers,
-} from '@reduxjs/toolkit';
+import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { authSlice } from './modules/auth/authSlice';
@@ -15,7 +11,11 @@ declare global {
   }
 }
 
-export const rootReducer = combineSlices(authSlice, gameStateSlice, leaderboardSlice);
+export const rootReducer = combineSlices(
+  authSlice,
+  gameStateSlice,
+  leaderboardSlice
+);
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -24,7 +24,6 @@ export const store = configureStore({
 });
 
 export type AppStore = typeof store;
-// export type RootState = ReturnType<typeof store.getState>;
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
 

@@ -11,17 +11,17 @@ import {
 import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ErrorAuth } from '../../components/ErrorAuth';
 import { PasswordModal } from '../../components/PasswordModal';
-import { API_URL, APPLICATION_JSON } from '../../consts';
 import { validateAllFields, validateField } from '../../helpers/validate';
 import { usePage } from '../../hooks/usePage';
 import { PageInitArgs } from '../../routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   AuthUserResponse,
+  editUser,
   getCurrentUser,
   logout,
-  // selectUser,
 } from '../../store/modules/auth/authSlice';
 import { selectUser } from '../../store/modules/auth/selectors';
 
@@ -38,18 +38,25 @@ type TUserErrors = Partial<TUserData>;
 const AVATAR_URL =
   'https://gravatar.com/avatar/96286509b79a0ea10daedb7be8906143?s=400&d=robohash&r=x';
 
-type FormFields = Partial<AuthUserResponse>;
+export type ProfileFormFields = Partial<AuthUserResponse>;
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [formValues, setFormValues] = useState<FormFields>(user || {});
+  const [formValues, setFormValues] = useState<ProfileFormFields>(user || {});
   const [formErrors, setFormErrors] = useState<TUserErrors>({});
   const [avatarUrl, setAvatarUrl] = useState(AVATAR_URL);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+  const handleOpen = () => {
+    setModalOpen(true);
+  };
 
   const handleChangeAvatar = useCallback(() => {
     if (!inputRef.current?.files?.length) {
@@ -90,13 +97,9 @@ export const ProfilePage = () => {
     const noErrors = Object.values(validationErrors).every((error) => !error);
 
     if (noErrors) {
-      fetch(`${API_URL}/user/profile`, {
-        method: 'PUT',
-        headers: APPLICATION_JSON,
-        body: JSON.stringify(formValues),
-        credentials: 'include',
-      });
-      navigate('/');
+      dispatch(editUser(formValues))
+        .unwrap()
+        .then(() => navigate('/'));
     }
   };
 
@@ -278,10 +281,22 @@ export const ProfilePage = () => {
                 type='submit'
                 fullWidth
                 variant='contained'
-                sx={{ mt: 2, mb: 2 }}
+                sx={{ mt: 2 }}
+                color='secondary'
               >
                 Save
               </Button>
+              <Button
+                type='button'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 2 }}
+                color='info'
+                onClick={() => navigate('/')}
+              >
+                Back
+              </Button>
+              <ErrorAuth />
             </Grid>
             <Grid
               item
@@ -290,7 +305,7 @@ export const ProfilePage = () => {
               <Button
                 type='button'
                 fullWidth
-                onClick={() => setShowModal(true)}
+                onClick={handleOpen}
               >
                 Change password
               </Button>
@@ -298,8 +313,8 @@ export const ProfilePage = () => {
           </Grid>
         </Box>
         <PasswordModal
-          showModal={showModal}
-          setShowModal={setShowModal}
+          open={modalOpen}
+          onClose={handleClose}
         />
       </Box>
     </Container>

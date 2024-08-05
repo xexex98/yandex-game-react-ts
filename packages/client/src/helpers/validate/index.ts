@@ -2,7 +2,16 @@ interface FieldValidation {
   regex: RegExp;
   empty: string;
   invalid: string;
+  notEqual?: string;
 }
+
+const password = {
+  regex: /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,40}$/,
+  empty: 'Password is required',
+  invalid:
+    'Password must be 8-40 characters long and include at least one uppercase letter and one digit',
+  notEqual: 'Passwords must be equal',
+};
 
 const FEEDBACK: Record<string, FieldValidation> = {
   first_name: {
@@ -28,12 +37,10 @@ const FEEDBACK: Record<string, FieldValidation> = {
     empty: 'Email is required',
     invalid: 'Email is invalid',
   },
-  password: {
-    regex: /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,40}$/,
-    empty: 'Password is required',
-    invalid:
-      'Password must be 8-40 characters long and include at least one uppercase letter and one digit',
-  },
+  password: password,
+  confirmPassword: password,
+  oldPassword: password,
+  newPassword: password,
   phone: {
     regex: /^\+?\d{10,15}$/,
     empty: 'Phone is required',
@@ -43,18 +50,23 @@ const FEEDBACK: Record<string, FieldValidation> = {
 
 export function validateField(
   name: keyof typeof FEEDBACK,
-  value: string
+  value: string,
+  compare: string = ''
 ): string {
   if (!FEEDBACK[name]) {
     return '';
   }
-
   if (!value) {
     return FEEDBACK[name].empty;
   } else if (!FEEDBACK[name].regex.test(value)) {
     return FEEDBACK[name].invalid;
+  } else if (
+    compare &&
+    value !== compare &&
+    typeof FEEDBACK[name].notEqual === 'string'
+  ) {
+    return FEEDBACK[name].notEqual as string;
   }
-
   return '';
 }
 

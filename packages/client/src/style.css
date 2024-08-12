@@ -8,9 +8,85 @@ body {
 
 #root {
   min-height: 100vh;
-  background-image: url(./assets/backgr_main.png);
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+#root.theme-light {
+  background-image: url(./assets/backgr_main.png);
+}
+
+#root.theme-dark {
+  background-image: url(./assets/backgr_main_dark.png);
+}
+
+.theme-toggle-wrap {
+  position: absolute;
+  z-index: 20;
+  left: 10px;
+  top: 10px;
+}
+
+.theme-toggle {
+  position: relative;
+  padding: 4px;
+  border: 0;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+#root.theme-light .theme-toggle {
+  background-color: #e3f3f9;
+}
+
+#root.theme-dark .theme-toggle {
+  background-color: #29100c;
+}
+
+.theme-toggle-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle,
+.theme-toggle__out,
+.theme-toggle path {
+  transition: all 0.6s ease-out;
+}
+
+#root.theme-light .theme-toggle path {
+  stroke: #000;
+}
+
+#root.theme-dark .theme-toggle path {
+  stroke: #fff28d;
+}
+
+#root.theme-light .theme-toggle__out {
+  fill: #000;
+}
+
+#root.theme-dark .theme-toggle__out {
+  fill: #fff28d;
+}
+
+.theme-toggle__coil,
+.theme-toggle__rays path {
+  stroke-dasharray: 1.1;
+}
+
+#root.theme-light .theme-toggle__coil,
+#root.theme-light .theme-toggle__rays path {
+  opacity: 0;
+  stroke-dashoffset: 1.1;
+}
+
+#root.theme-dark .theme-toggle__coil,
+#root.theme-dark .theme-toggle__rays path {
+  opacity: 1;
+  stroke-dashoffset: 0;
 }

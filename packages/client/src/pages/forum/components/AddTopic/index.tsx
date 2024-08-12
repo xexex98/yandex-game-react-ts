@@ -4,6 +4,8 @@ import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FormEvent } from 'react';
 
+import { createChat } from '../../../../api/chats/chats.resource';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -33,9 +35,15 @@ export const AddTopic = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    const title = data.get('title')
+    const description = data.get('description')
+
+    if(title) {
+      createChat(String(title)).then(res => console.info('createdChat', res))
+    }
     console.info({
-      title: data.get('title'),
-      description: data.get('description'),
+      title,
+      description
     });
   };
 

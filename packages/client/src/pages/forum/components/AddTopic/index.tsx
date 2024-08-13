@@ -1,8 +1,8 @@
-import AddCircle from '@mui/icons-material/AddCircle';
-import Close from '@mui/icons-material/Close';
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FormEvent } from 'react';
+
+import { createChat } from '../../../../api/chats/chats.resource';
 
 const style = {
   position: 'absolute',
@@ -33,20 +33,21 @@ export const AddTopic = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    const title = data.get('title');
+    const description = data.get('description');
+
+    if (title) {
+      createChat(String(title)).then((res) => console.info('createdChat', res));
+    }
     console.info({
-      title: data.get('title'),
-      description: data.get('description'),
+      title,
+      description,
     });
   };
 
   return (
     <>
-      <Button
-        onClick={handleOpen}
-        endIcon={<AddCircle />}
-      >
-        Add Topic
-      </Button>
+      <Button onClick={handleOpen}>Add Topic</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -61,10 +62,7 @@ export const AddTopic = () => {
             }}
           >
             <Typography variant='h5'>Add Topic</Typography>
-            <Close
-              sx={{ cursor: 'pointer' }}
-              onClick={handleClose}
-            />
+            <div>close</div>
           </Box>
           <Box
             component='form'

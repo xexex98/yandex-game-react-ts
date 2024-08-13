@@ -71,12 +71,10 @@ const routes: CustomRouteObject[] = [
         path: 'forum',
         Component: ForumPage,
         //ErrorBoundary: MyErrorBoundary,
-        children: [
-          {
-            path: 'topic/:id',
-            Component: TopicPage,
-          },
-        ],
+      },
+      {
+        path: 'topic/:id',
+        Component: TopicPage,
       },
     ],
   },

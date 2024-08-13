@@ -2,7 +2,7 @@ import 'dayjs/locale/ru';
 
 import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 export type Card = {
   id: number;

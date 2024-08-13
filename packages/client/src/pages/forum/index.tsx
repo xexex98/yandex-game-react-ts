@@ -5,7 +5,7 @@ import { AddTopic } from './components/AddTopic';
 import { ListTopic } from './components/ListTopic';
 
 export const ForumPage = () => {
-  const showForumPage = !location.pathname.includes('forum/topic');
+  const showForumPage = true;
 
   return (
     <Container

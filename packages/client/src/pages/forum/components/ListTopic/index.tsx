@@ -1,13 +1,13 @@
-import { Link } from '@mui/material';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { ChatsEntity } from '../../../../api/chats/chats.entity'
+import { ChatsEntity } from '../../../../api/chats/chats.entity';
 import { getChats } from '../../../../api/chats/chats.resource';
 import { ListForum } from '../../../../components/ListForum';
 import { TopicCard } from '../../../../components/TopicCard';
 
 export const ListTopic = () => {
-  const [topics, setTopics] = useState<ChatsEntity | []>([])
+  const [topics, setTopics] = useState<ChatsEntity | []>([]);
 
   const [currantPage, setCurrantPage] = useState(1);
 
@@ -16,8 +16,8 @@ export const ListTopic = () => {
   };
 
   useEffect(() => {
-    getChats().then(data => setTopics(data))
-  }, [])
+    getChats().then((data) => setTopics(data));
+  }, []);
 
   return (
     <ListForum
@@ -27,11 +27,8 @@ export const ListTopic = () => {
     >
       {(card) => (
         <Link
-          href={`/forum/topic/${card.id}`}
+          to={`/topic/${card.id}`}
           key={card.id}
-          sx={{
-            width: '100%',
-          }}
         >
           <TopicCard card={{ ...card, content: card.shortDescription }} />
         </Link>

@@ -17,6 +17,7 @@ type AuthState = {
   user: AuthUserResponse | null;
   error: string | null;
   status: 'idle' | 'loading' | 'success' | 'failed';
+  theme: 'light' | 'dark';
 };
 
 export type AuthUserResponse = {
@@ -226,12 +227,21 @@ const initialState: AuthState = {
   user: null,
   isLoggedIn: false,
   error: null,
+  theme: 'light',
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    toggleTheme: (state) => {
+      if (state.theme === 'light') {
+        state.theme = 'dark';
+      } else {
+        state.theme = 'light';
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -336,8 +346,13 @@ export const authSlice = createSlice({
       });
   },
 });
+
 export default authSlice.reducer;
+
+export const { toggleTheme } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.user;
 
 export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;
+
+export const selectTheme = (state: RootState) => state.auth.theme;

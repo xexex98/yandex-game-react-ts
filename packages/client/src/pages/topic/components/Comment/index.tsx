@@ -1,4 +1,3 @@
-import MapsUgc from '@mui/icons-material/MapsUgc';
 import { Box, Button, TextField } from '@mui/material';
 import { FC, useState } from 'react';
 
@@ -42,7 +41,7 @@ export const Comment: FC<CommentProps> = ({ sendComment }) => {
       >
         <Button
           variant='contained'
-          endIcon={<MapsUgc />}
+          endIcon={null}
           onClick={send}
         >
           Send

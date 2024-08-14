@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+const fs = require('fs');
+const path = require('path');
 
 const directoryToScan = './dist'; // Папка, в которой находятся статические файлы проекта
 const staticFileExtensions = ['.html', '.css', '.js', '.png', '.jpg', '.svg'];

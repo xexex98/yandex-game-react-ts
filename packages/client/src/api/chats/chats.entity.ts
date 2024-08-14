@@ -2,6 +2,6 @@ export type ChatEntity = {
   id: number;
   title: string;
   shortDescription: string;
-  date: Date
+  date: Date | string
 }
 export type ChatsEntity = Array<ChatEntity>

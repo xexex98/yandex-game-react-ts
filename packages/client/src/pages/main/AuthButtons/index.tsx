@@ -24,7 +24,6 @@ export const AuthButtons: FC = () => {
           className={style.link}
         >
           <Button
-            className={style.button}
             variant='contained'
             sx={{
               width: '100%',
@@ -39,7 +38,9 @@ export const AuthButtons: FC = () => {
         >
           <Button
             variant='outlined'
-            className={style.button}
+            sx={{
+              width: '100%',
+            }}
           >
             Зарегистрироваться
           </Button>

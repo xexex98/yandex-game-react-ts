@@ -23,7 +23,9 @@ export const GameButtons: FC = () => {
         >
           <Button
             variant='contained'
-            className={style.button}
+            sx={{
+              width: '100%',
+            }}
           >
             Игра
           </Button>
@@ -34,7 +36,9 @@ export const GameButtons: FC = () => {
         >
           <Button
             variant='contained'
-            className={style.button}
+            sx={{
+              width: '100%',
+            }}
           >
             Таблица лидеров
           </Button>
@@ -45,7 +49,9 @@ export const GameButtons: FC = () => {
         >
           <Button
             variant='contained'
-            className={style.button}
+            sx={{
+              width: '100%',
+            }}
           >
             Форум
           </Button>
@@ -56,7 +62,9 @@ export const GameButtons: FC = () => {
         >
           <Button
             variant='contained'
-            className={style.button}
+            sx={{
+              width: '100%',
+            }}
           >
             Профиль
           </Button>

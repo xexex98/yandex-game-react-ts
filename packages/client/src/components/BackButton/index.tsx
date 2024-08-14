@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 type BackButtonPros = {
   href: string;
-  style: React.CSSProperties | undefined;
+  style?: React.CSSProperties | undefined;
 };
 
 export const BackButton: FC<BackButtonPros> = ({ href, style }) => {

@@ -24,7 +24,6 @@ app.use(cors(corsOptions))
 const port = Number(process.env.SERVER_PORT)
 
 sequelize.addModels([Topic, Comment, Reply])
-// sequelize.sync({ force: true })
 sequelize.sync()
 
 app.use('/api', express.urlencoded())
@@ -38,7 +37,7 @@ app.use(
     target: 'https://ya-praktikum.tech/api/v2',
     changeOrigin: true,
     cookieDomainRewrite: `localhost`,
-  })
+  }),
 )
 
 app.listen(port, () => {

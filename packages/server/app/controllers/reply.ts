@@ -3,6 +3,7 @@ import { Auth } from '../decorators/CheckAuth'
 import { Request, Response } from 'express'
 import { ReplyFromCommentDTO, ReplyFromReplyDTO } from '../dto/reply'
 import ReplyService from '../service/reply'
+import { getMessageError } from '../utils/getMessageError'
 
 class ReplyController {
   user?: User
@@ -10,7 +11,7 @@ class ReplyController {
   @Auth
   async createFromComment(
     req: Request<object, object, ReplyFromCommentDTO>,
-    res: Response
+    res: Response,
   ) {
     try {
       if (this.user) {
@@ -26,18 +27,14 @@ class ReplyController {
         res.status(201).send()
       }
     } catch (e) {
-      let message = ''
-      if (e instanceof Error) {
-        message = e.message
-      }
-      res.status(400).send(message)
+      res.status(400).send(getMessageError(e))
     }
   }
 
   @Auth
   async createFromReply(
     req: Request<object, object, ReplyFromReplyDTO>,
-    res: Response
+    res: Response,
   ) {
     try {
       const data = req.body
@@ -53,11 +50,7 @@ class ReplyController {
         res.status(201).send()
       }
     } catch (e) {
-      let message = ''
-      if (e instanceof Error) {
-        message = e.message
-      }
-      res.status(400).send(message)
+      res.status(400).send(getMessageError(e))
     }
   }
 }

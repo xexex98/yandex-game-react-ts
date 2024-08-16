@@ -1,22 +1,36 @@
 import { TopicDTO } from '../dto/topic'
 import { Topic } from '../models/topic'
-import { Comment } from '../models/comment'
+import { Pagination } from '../types/Pagination'
 
 class TopicService {
   async create(data: TopicDTO) {
-    await Topic.create(data)
+    try {
+      await Topic.create(data)
+    } catch (e) {
+      console.error(e)
+      throw new Error('Ошибка создания topic')
+    }
   }
 
-  async getAll() {
-    const t = await Topic.findAll({
-      include: [
-        {
-          model: Comment,
-        },
-      ],
-    })
-    console.log(t)
-    return t
+  async getAll(pagination?: Pagination) {
+    try {
+      if (pagination) {
+        const { limit, page } = pagination
+        const topics = await Topic.findAndCountAll({
+          offset: limit * (page - 1),
+          limit: limit,
+        })
+        return {
+          rows: topics.rows,
+          page: page,
+          totalPage: Math.ceil(topics.count / limit),
+        }
+      }
+      return await Topic.findAll()
+    } catch (e) {
+      console.error(e)
+      throw new Error('Ошибка получения topic')
+    }
   }
 }
 

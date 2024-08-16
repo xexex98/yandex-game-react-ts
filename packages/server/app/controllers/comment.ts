@@ -4,6 +4,7 @@ import { CommentDTO } from '../dto/comment'
 import { Request, Response } from 'express'
 import CommentService from '../service/comment'
 import { transformPagination } from '../utils/validPagintaion'
+import { getMessageError } from '../utils/getMessageError'
 
 class CommentController {
   user?: User
@@ -11,7 +12,7 @@ class CommentController {
   @Auth
   async create(
     req: Request<object, object, Omit<CommentDTO, 'idUser'>>,
-    res: Response
+    res: Response,
   ) {
     try {
       const data = req.body
@@ -20,8 +21,7 @@ class CommentController {
         res.status(201).send()
       }
     } catch (e) {
-      console.error(e)
-      res.status(400).send()
+      res.status(400).send(getMessageError(e))
     }
   }
 
@@ -29,18 +29,16 @@ class CommentController {
   async findAll(req: Request, res: Response) {
     try {
       const { topicId, page, limit } = req.query
-      if (topicId) {
-        const topics = await CommentService.getCommentByTopic(
-          Number(topicId),
-          transformPagination(page, limit)
-        )
-        res.send(topics)
-      } else {
-        res.status(400).send('Отсутствует поле topicId')
+      if (!topicId) {
+        throw new Error('Отсутствует поле topicId')
       }
+      const topics = await CommentService.getCommentByTopic(
+        Number(topicId),
+        transformPagination(page, limit),
+      )
+      res.send(topics)
     } catch (e) {
-      console.error(e)
-      res.status(400).send()
+      res.status(400).send(getMessageError(e))
     }
   }
 }

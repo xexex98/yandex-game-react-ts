@@ -2,20 +2,16 @@ import { Pagination } from '../types/Pagination'
 
 export function transformPagination(
   page: unknown,
-  limit: unknown
+  limit: unknown,
 ): Pagination | undefined {
-  page = Number(page)
-  limit = Number(limit)
-  if (
-    typeof page !== 'number' ||
-    typeof limit !== 'number' ||
-    page < 1 ||
-    limit < 1
-  ) {
+  const pageLocal = Number(page)
+  const limitLocal = Number(limit)
+  console.log(page, limit)
+  if (!pageLocal || !limitLocal || pageLocal < 1 || limitLocal < 1) {
     return undefined
   }
   return {
-    page,
-    limit,
+    page: pageLocal,
+    limit: limitLocal,
   }
 }

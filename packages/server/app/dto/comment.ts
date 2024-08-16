@@ -1,5 +1,3 @@
-import { Comment } from '../models/comment'
-
 export type CommentDTO = {
   value: string
   topicId: number
@@ -11,5 +9,5 @@ export type CommentReply = {
   value: string
   idUser: number
   replyId?: number
-  createdAt:Date
+  createdAt: Date
 }

@@ -1,0 +1,10 @@
+.reaction_img {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}

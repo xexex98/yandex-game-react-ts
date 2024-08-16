@@ -2,8 +2,10 @@ import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { authSlice } from './modules/auth/authSlice';
+import { commentsSlice } from './modules/coments/commentsSlice';
 import { gameStateSlice } from './modules/gameState/gameStateSlice';
 import { leaderboardSlice } from './modules/leaderboard/leaderboardSlice';
+import { reactionSlice } from './modules/reactions/reactionsSlice';
 
 declare global {
   interface Window {
@@ -14,7 +16,9 @@ declare global {
 export const rootReducer = combineSlices(
   authSlice,
   gameStateSlice,
-  leaderboardSlice
+  leaderboardSlice,
+  reactionSlice,
+  commentsSlice
 );
 
 export const store = configureStore({

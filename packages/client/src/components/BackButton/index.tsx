@@ -1,10 +1,9 @@
-import ArrowBack from '@mui/icons-material/ArrowBack';
 import { Button, Link } from '@mui/material';
 import { FC } from 'react';
 
 type BackButtonPros = {
   href: string;
-  style: React.CSSProperties | undefined;
+  style?: React.CSSProperties | undefined;
 };
 
 export const BackButton: FC<BackButtonPros> = ({ href, style }) => {
@@ -15,7 +14,7 @@ export const BackButton: FC<BackButtonPros> = ({ href, style }) => {
     >
       <Button
         variant='contained'
-        startIcon={<ArrowBack />}
+        startIcon={null}
       >
         Back
       </Button>

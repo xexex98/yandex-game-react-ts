@@ -4,21 +4,16 @@ import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { FC } from 'react';
 
-export type Card = {
-  id: number;
-  title: string;
-  rating?: number;
-  content: string;
-  date: Date;
-  avatar?: string;
-};
+import { CommentType } from '../../../../store/modules/coments/commentsSlice';
+import { EmojiBlock } from '../EmojiBlock';
 
-type TopicProps = {
-  card: Card;
+type Props = {
+  card: CommentType;
 };
 
 dayjs.locale('ru');
-export const TopicCard: FC<TopicProps> = ({ card }) => {
+
+export const CommentCard: FC<Props> = ({ card }) => {
   const transformDate = (date: Date) => {
     return dayjs(date).format('DD MMMM YYYY HH:mm');
   };
@@ -36,7 +31,6 @@ export const TopicCard: FC<TopicProps> = ({ card }) => {
           gap: '4px',
         }}
       >
-        {card.avatar}
         <Avatar
           sx={{ m: 1, bgcolor: 'secondary.main' }}
           src={card.avatar}
@@ -82,10 +76,15 @@ export const TopicCard: FC<TopicProps> = ({ card }) => {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             width: '100%',
           }}
         >
+          <EmojiBlock
+            reactionsList={card.reactions}
+            commentId={card.id}
+          />
+
           <Typography
             variant='caption'
             color='text.secondary'

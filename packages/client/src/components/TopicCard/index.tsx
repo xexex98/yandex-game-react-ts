@@ -9,7 +9,7 @@ export type Card = {
   title: string;
   rating?: number;
   content: string;
-  date: Date;
+  date: Date | string;
   avatar?: string;
 };
 
@@ -91,7 +91,7 @@ export const TopicCard: FC<TopicProps> = ({ card }) => {
             color='text.secondary'
             component='h4'
           >
-            {transformDate(card.date)}
+            {card.date !== '' ? transformDate(card.date as Date) : null}
           </Typography>
         </Box>
       </CardContent>

@@ -2,7 +2,9 @@ import { User } from '../decorators/types'
 import { Auth } from '../decorators/CheckAuth'
 import { TopicDTO } from '../dto/topic'
 import { Request, Response } from 'express'
+import { transformPagination } from '../utils/validPagintaion'
 import TopicService from '../service/topic'
+import { getMessageError } from '../utils/getMessageError'
 
 class TopicController {
   user?: User
@@ -10,7 +12,7 @@ class TopicController {
   @Auth
   async create(
     req: Request<object, object, Omit<TopicDTO, 'idUser'>>,
-    res: Response
+    res: Response,
   ) {
     try {
       const data = req.body
@@ -19,17 +21,18 @@ class TopicController {
         res.status(201).send()
       }
     } catch (e) {
-      res.status(400).send()
+      res.status(400).send(getMessageError(e))
     }
   }
 
   @Auth
-  async findAll(_req: Request, res: Response) {
+  async findAll(req: Request, res: Response) {
     try {
-      const topics = await TopicService.getAll()
+      const { page, limit } = req.query
+      const topics = await TopicService.getAll(transformPagination(page, limit))
       res.send(topics)
     } catch (e) {
-      console.log(e)
+      res.status(400).send(getMessageError(e))
     }
   }
 }

@@ -1,122 +1,50 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ListForum } from '../../../../components/ListForum';
-import { TopicCard } from '../../../../components/TopicCard';
-
-type Card = {
-  id: number;
-  name: string;
-  comment: string;
-  rating: number;
-  date: Date;
-};
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import {
+  CommentType,
+  getComments,
+} from '../../../../store/modules/coments/commentsSlice';
+import { CommentCard } from '../CommentCard';
 
 export const ListComment = () => {
-  const comments: Card[] = [
-    {
-      id: 1,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 2,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 3,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 4,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 5,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 6,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 7,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 8,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 9,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 10,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 11,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-    {
-      id: 12,
-      name: 'Иванонв Иван Иваныч',
-      comment: '11111',
-      rating: 3000,
-      date: new Date(),
-    },
-  ];
+  const dispatch = useAppDispatch();
+  const { comments, status } = useAppSelector((state) => state.comments);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [currantPage, setCurrantPage] = useState(1);
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(getComments());
+    }
+  });
 
-  const changeCurantPage = (page: number) => {
-    setCurrantPage(page);
+  const changeCurrentPage = (page: number) => {
+    setCurrentPage(page);
   };
 
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'failed' || !comments?.length) {
+    return <div>Not found...</div>;
+  }
+
   return (
-    <ListForum
-      list={comments.slice(10 * (currantPage - 1), 10 * currantPage)}
-      changePage={changeCurantPage}
-      maxLength={comments.length}
-    >
-      {(card: Card) => (
-        <TopicCard
-          card={{ ...card, content: card.comment, title: card.name }}
-          key={card.id}
-        />
-      )}
-    </ListForum>
+    <>
+      <ListForum
+        list={comments.slice(10 * (currentPage - 1), 10 * currentPage)}
+        changePage={changeCurrentPage}
+        maxLength={comments.length}
+      >
+        {(card: CommentType) => (
+          <CommentCard
+            card={{ ...card }}
+            key={card.id}
+          />
+        )}
+      </ListForum>
+    </>
   );
 };

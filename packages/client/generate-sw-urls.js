@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+const fs = require('fs');
+const path = require('path');
 
 const directoryToScan = './dist'; // Папка, в которой находятся статические файлы проекта
 const staticFileExtensions = ['.html', '.css', '.js', '.png', '.jpg', '.svg'];
@@ -8,7 +8,7 @@ let urls = [];
 function scanDirectory(directory) {
   const files = fs.readdirSync(directory);
 
-  files.forEach(file => {
+  files.forEach((file) => {
     const filePath = path.join(directory, file);
     const stat = fs.statSync(filePath);
 

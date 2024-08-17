@@ -12,7 +12,6 @@ import {
   oAuthLogin,
   selectIsLoggedIn,
 } from '../../store/modules/auth/authSlice';
-import { AuthButtons } from './AuthButtons';
 import { GameButtons } from './GameButtons';
 
 export const MainPage = () => {
@@ -49,7 +48,7 @@ export const MainPage = () => {
           src={Logo}
           style={{ height: 100, marginBottom: 40 }}
         />
-        {isLoggedIn ? <GameButtons /> : <AuthButtons />}
+        <GameButtons />
       </Box>
     </div>
   );

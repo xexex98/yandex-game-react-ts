@@ -1,0 +1,15 @@
+.emoji {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+
+.emojiContainer {
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.emojiContainer:hover {
+  background: #eee;
+  cursor: pointer;
+}

@@ -4,7 +4,7 @@ export type ChatSource = {
   last_message: {
     time: Date;
     content: string;
-  } | null
-}
+  } | null;
+};
 
-export type ChatsSource = Array<ChatSource>
+export type ChatsSource = Array<ChatSource>;

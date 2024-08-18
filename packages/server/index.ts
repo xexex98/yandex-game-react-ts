@@ -23,8 +23,25 @@ app.use(cors(corsOptions))
 
 const port = Number(process.env.SERVER_PORT)
 
-sequelize.addModels([Topic, Comment, Reply])
-sequelize.sync()
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('\x1b[32m%s\x1b[0m', '  ➜ 🎸   Database added models...')
+    return sequelize.addModels([Topic, Comment, Reply])
+  })
+  .then(() => {
+    console.log(
+      '\x1b[32m%s\x1b[0m',
+      '  ➜ 🎸   Database synchronization started...',
+    )
+    return sequelize.sync({ force: true })
+  })
+  .then(() => {
+    console.log('\x1b[32m%s\x1b[0m', '  ➜ 🎸   Database connected!')
+  })
+  .catch(err => {
+    console.error('\x1b[31m%s\x1b[0m', err)
+  })
 
 app.use('/api', express.urlencoded())
 app.use('/api', express.json())

@@ -6,7 +6,6 @@ services:
       dockerfile: Dockerfile.client
       args:
         CLIENT_PORT: ${CLIENT_PORT}
-        REDIRECT_URI: ${REDIRECT_URI}
     restart: always
     ports:
       - "${CLIENT_PORT}:80"

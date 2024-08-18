@@ -32,7 +32,7 @@ sequelize
   .then(() => {
     console.log(
       '\x1b[32m%s\x1b[0m',
-      '  ➜ 🎸   Database synchronization started...',
+      '  ➜ 🎸   Database synchronization started...'
     )
     return sequelize.sync({ force: true })
   })
@@ -54,7 +54,7 @@ app.use(
     target: 'https://ya-praktikum.tech/api/v2',
     changeOrigin: true,
     cookieDomainRewrite: `localhost`,
-  }),
+  })
 )
 
 app.listen(port, () => {

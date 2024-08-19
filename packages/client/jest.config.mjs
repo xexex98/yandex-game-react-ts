@@ -8,7 +8,6 @@ export default {
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,
-    __REDIRECT_URI__: process.env.REDIRECT_URI,
   },
   setupFiles: ['jest-canvas-mock'],
   moduleNameMapper: {

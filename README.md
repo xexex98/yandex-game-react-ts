@@ -1,4 +1,4 @@
-[Видео презентация](https://drive.google.com/file/d/1j9aRAZ2KgqV3ClcOkglZA1xsa_6f4Eki/view?usp=sharing)
+[Видео презентация](https://drive.google.com/file/d/107BFADkIrgh2vIwvjqz1-FTsHfUVEwbp/view?usp=drive_link)
 ### Как запускать?
 
 1. Убедитесь что у вас установлен `node` и `docker`

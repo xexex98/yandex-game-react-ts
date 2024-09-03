@@ -5,6 +5,8 @@ import fs from 'fs/promises';
 import path from 'node:path';
 import { createServer as createViteServer } from 'vite';
 
+import { xssMiddleware } from './middlewares/xssMiddleware'
+
 dotenv.config();
 
 const port = process.env.CLIENT_PORT || 3000;
@@ -23,6 +25,7 @@ async function createServer() {
   app.use(vite.middlewares);
 
   app.use(cookieParser());
+  app.use(xssMiddleware);
 
   app.get('*', async (req, res, next) => {
     const url = req.originalUrl;

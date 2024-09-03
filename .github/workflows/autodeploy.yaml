@@ -1,4 +1,13 @@
- on:
-   push:
-     branches:
-       - feature/YAN-78-auto-deploy
+name: Yandex Cloud CR "Login" Action for GitHub Actions           
+on:
+ push:
+  branches:
+   - feature/YAN-78-auto-deploy
+  # You may pin to the exact commit or the version.
+  # uses: yc-actions/yc-cr-login@b3f9f3de6a883203431aeec20f3cc602fafd3a05
+uses: yc-actions/yc-cr-login@v2.0.0
+with:
+    # Json containing authorized key for Service Account. More info https://cloud.yandex.ru/docs/container-registry/operations/authentication#sa-json
+  yc-sa-json-credentials: 
+    # Cloud API endpoint
+  cr-endpoint: # optional, default is cr.yandex

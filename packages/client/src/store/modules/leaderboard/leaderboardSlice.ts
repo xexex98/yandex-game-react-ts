@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { ErrorNotifications } from '../../../../services/notifications';
 import { getAllLeaderboardTeam, RatingType } from '../../../api/leaderboard';
 import { searchUsers } from '../../../api/user';
 import { AppDispatch, RootState } from '../..';
@@ -39,6 +40,7 @@ export const getAllLeaderboard = createAsyncThunk<
       return { ...el, avatar };
     });
   } catch (error) {
+    ErrorNotifications('Произошла ошибка при получение таблицы лидеров');
     return rejectWithValue((error as Error).message);
   }
 });

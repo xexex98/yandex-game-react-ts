@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { ErrorNotifications } from '../../../../services/notifications';
 import { TChangePasswordFormValues } from '../../../components/PasswordModal';
 import {
   API_URL,
@@ -42,6 +43,7 @@ export const getCurrentUser = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -68,6 +70,7 @@ export const login = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -91,6 +94,7 @@ export const register = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -113,6 +117,7 @@ export const logout = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -137,6 +142,7 @@ export const oAuthLogin = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -157,6 +163,7 @@ export const oAuthServiceId = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -186,6 +193,7 @@ export const editUser = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }
@@ -213,6 +221,7 @@ export const changePassword = createAsyncThunk(
 
       if (!response.ok) {
         return response.json().then((text) => {
+          ErrorNotifications(text.reason);
           return rejectWithValue(text.reason);
         });
       }

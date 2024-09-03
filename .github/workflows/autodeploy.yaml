@@ -1,0 +1,4 @@
+ on:
+   push:
+     branches:
+       - feature/YAN-78-auto-deploy

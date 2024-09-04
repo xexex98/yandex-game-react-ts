@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -21,6 +44,8 @@ async function createServer() {
     });
     app.use(vite.middlewares);
     app.use((0, cookie_parser_1.default)());
+    const { randomBytes } = await Promise.resolve().then(() => __importStar(require('node:crypto')));
+    const cspNonce = randomBytes(16).toString('base64');
     app.get('*', async (req, res, next) => {
         const url = req.originalUrl;
         try {
@@ -30,8 +55,19 @@ async function createServer() {
             const { html: appHtml, initialState } = await render(req);
             const html = template
                 .replace(`<!--ssr-outlet-->`, appHtml)
-                .replace(`<!--ssr-initial-state-->`, `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`);
-            res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+                .replace('<script>', `<script nonce="${cspNonce}">`)
+                .replace(`<!--ssr-initial-state-->`, `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`)
+                .replace('<script>', `<script nonce="${cspNonce}">`)
+                .replace('<script', `<script nonce="${cspNonce}"`)
+                .replace('<!--meta-nonce-->', `<meta property="csp-nonce" content="${cspNonce}" />`);
+            const cspHtml = html.replace('script', `script nonce="${cspNonce}"`);
+            res.status(200).set({
+                'Content-Type': 'text/html',
+                'Content-Security-Policy': [
+                    `script-src 'self' 'nonce-${cspNonce}'`,
+                    // `style-src 'self' nonce-${cspNonce}`,
+                ].join('; ')
+            }).end(html);
         }
         catch (e) {
             vite.ssrFixStacktrace(e);

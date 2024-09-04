@@ -24,6 +24,9 @@ async function createServer() {
 
   app.use(cookieParser());
 
+  const { randomBytes } = await import('node:crypto');
+  const cspNonce = randomBytes(16).toString('base64');
+
   app.get('*', async (req, res, next) => {
     const url = req.originalUrl;
 
@@ -43,12 +46,27 @@ async function createServer() {
 
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace('<script>', `<script nonce="${cspNonce}">`)
         .replace(
           `<!--ssr-initial-state-->`,
           `<script>window.APP_INITIAL_STATE = ${JSON.stringify(initialState)}</script>`
+        )
+        .replace('<script>', `<script nonce="${cspNonce}">`)
+        .replace('<script', `<script nonce="${cspNonce}"`)
+        .replace(
+          '<!--meta-nonce-->',
+          `<meta property="csp-nonce" content="${cspNonce}" />`
         );
 
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+      res
+        .status(200)
+        .set({
+          'Content-Type': 'text/html',
+          'Content-Security-Policy': [
+            `script-src 'self' 'nonce-${cspNonce}'`,
+          ].join('; '),
+        })
+        .end(html);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);

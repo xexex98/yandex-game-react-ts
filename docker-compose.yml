@@ -1,12 +1,15 @@
 services:
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes: 
-  #     - ./certbot/conf:/etc/letsencrypt
-  #     - ./certbot/www:/var/www/certbot
-  #   networks:
-  #     - ludocoders
+  certbot:
+    image: certbot/certbot
+    restart: always
+    volumes:
+      - ./packages/client/certbot/conf:/etc/letsencrypt
+      - ./packages/client/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - client
+    networks:
+      - ludocoders
   client:
     container_name: client
     build:
@@ -21,11 +24,11 @@ services:
     environment:
       - CLIENT_PORT=${CLIENT_PORT}
       - SERVER_PORT=${SERVER_PORT}
-    # volumes:
-    #   - ./certbot/conf:/etc/letsencrypt
-    #   - ./certbot/www:/var/www/certbot
-    # networks:
-    #   - ludocoders
+    volumes:
+      - ./packages/client/certbot/conf:/etc/letsencrypt
+      - ./packages/client/certbot/www:/var/www/certbot
+    networks:
+      - ludocoders
   server:
     container_name: server
     build:

@@ -32,6 +32,7 @@ const express_1 = __importDefault(require("express"));
 const promises_1 = __importDefault(require("fs/promises"));
 const node_path_1 = __importDefault(require("node:path"));
 const vite_1 = require("vite");
+const xssMiddleware_1 = require("./middlewares/xssMiddleware");
 dotenv_1.default.config();
 const port = process.env.CLIENT_PORT || 3000;
 const clientPath = node_path_1.default.join(__dirname, '..');
@@ -44,6 +45,7 @@ async function createServer() {
     });
     app.use(vite.middlewares);
     app.use((0, cookie_parser_1.default)());
+    app.use(xssMiddleware_1.xssMiddleware);
     const { randomBytes } = await Promise.resolve().then(() => __importStar(require('node:crypto')));
     const cspNonce = randomBytes(16).toString('base64');
     app.get('*', async (req, res, next) => {
@@ -60,14 +62,15 @@ async function createServer() {
                 .replace('<script>', `<script nonce="${cspNonce}">`)
                 .replace('<script', `<script nonce="${cspNonce}"`)
                 .replace('<!--meta-nonce-->', `<meta property="csp-nonce" content="${cspNonce}" />`);
-            const cspHtml = html.replace('script', `script nonce="${cspNonce}"`);
-            res.status(200).set({
+            res
+                .status(200)
+                .set({
                 'Content-Type': 'text/html',
                 'Content-Security-Policy': [
                     `script-src 'self' 'nonce-${cspNonce}'`,
-                    // `style-src 'self' nonce-${cspNonce}`,
-                ].join('; ')
-            }).end(html);
+                ].join('; '),
+            })
+                .end(html);
         }
         catch (e) {
             vite.ssrFixStacktrace(e);

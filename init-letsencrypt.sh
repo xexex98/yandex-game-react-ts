@@ -7,7 +7,6 @@ fi
 
 domains=(ludocoders-ludoclicker-39.ya-praktikum.tech)
 # domains=(example.com)
-# domains=(localhost)
 rsa_key_size=4096
 data_path="./packages/client/certbot"
 email="xexex98@mail.ru" # Adding a valid address is strongly recommended

@@ -1,18 +1,14 @@
 services:
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    restart: always
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    command: certonly --webroot --staging --webroot-path /var/www/certbot --email xexex98@mail.ru --agree-tos --no-eff-email -d ludocoders-ludoclicker-39.ya-praktikum.tech
-    networks:
-      - ludocoders
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   restart: always
+  #   volumes:
+  #     - ./certbot/www:/var/www/certbot/
+  #     - ./certbot/conf:/etc/letsencrypt/
+  #   command: certonly --webroot --force-renewal --staging -w /var/www/certbot --email xexex98@mail.ru --agree-tos --no-eff-email -d ludocoders-ludoclicker-39.ya-praktikum.tech
   client:
     container_name: client
-    depends_on:
-      - certbot
     build:
       context: .
       dockerfile: Dockerfile.client
@@ -23,11 +19,11 @@ services:
       - CLIENT_PORT=80
       - SERVER_PORT=3001
     ports:
-      - 80:80
       - 443:443
+      - 80:80
     volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./certbot/www:/var/www/certbot/
+      - ./certbot/conf:/etc/letsencrypt/
     networks:
       - ludocoders
   server:

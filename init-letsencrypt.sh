@@ -6,7 +6,6 @@ if ! [ -x "$(command -v docker compose)" ]; then
 fi
 
 domains=(ludocoders-ludoclicker-39.ya-praktikum.tech)
-# domains=(example.com)
 
 rsa_key_size=4096
 data_path="./certbot"
@@ -79,4 +78,4 @@ docker compose run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx ..."
-docker compose exec nginx nginx -s reload
+docker compose exec client nginx -s reload

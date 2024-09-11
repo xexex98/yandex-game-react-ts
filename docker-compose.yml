@@ -1,12 +1,12 @@
 services:
   # certbot:
-  #   container_name: certbot
-  #   image: certbot/certbot
-  #   restart: always
-  #   volumes:
-  #     - ./certbot/conf:/etc/letsencrypt:rw
-  #     - ./certbot/www:/var/www/certbot:rw
-  #   command: certonly --webroot --force-renewal --staging -w /var/www/certbot --email xexex98@mail.ru --agree-tos --no-eff-email -d ludocoders-ludoclicker-39.ya-praktikum.tech
+    # container_name: certbot
+    # image: certbot/certbot
+    # restart: always
+    # volumes:
+    #   - ./certbot/conf:/etc/letsencrypt
+    #   - ./certbot/www:/var/www/certbot
+    # command: certonly --webroot --force-renewal --staging --webroot-path=/var/www/certbot --email xexex98@mail.ru --agree-tos --no-eff-email -d ludocoders-ludoclicker-39.ya-praktikum.tech
 
   client:
     container_name: client
